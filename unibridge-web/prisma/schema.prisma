@@ -1,0 +1,76 @@
+// Prisma schema for UNIBRIDGE Platform (SIH 2026 PS 26044)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  role        String   // STUDENT | FACULTY | INDUSTRY_PARTNER | ADMIN
+  department  String?
+  institution String?
+  skills      String   // Comma-separated list of skills
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ProblemStatement {
+  id                  String   @id @default(uuid())
+  title               String
+  companyName         String
+  description         String
+  requiredSkills      String   // Comma-separated list of skills
+  targetDeliverables  String
+  difficulty          String   // BEGINNER | INTERMEDIATE | ADVANCED
+  timelineWeeks       Int      @default(12)
+  mentorshipAvailable Boolean  @default(true)
+  targetAudience      String   @default("Undergraduate Capstone / Interns")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model CourseOutcome {
+  id                 String   @id @default(uuid())
+  department         String
+  courseName         String
+  semester           Int
+  learningOutcomes   String   // Text / JSON representation of outcomes
+  prerequisiteSkills String   // Comma-separated prerequisites
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model SkillGapTelemetry {
+  id                       String   @id @default(uuid())
+  department               String
+  academicYear             String
+  skillDeficiency          String
+  missingTools             String   // Comma-separated list of missing tools
+  aggregateDeficitScore    Float
+  curriculumRecommendation String
+  status                   String   @default("FLAGGED") // FLAGGED, UNDER_REVIEW, INTEGRATED
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+}
+
+model PlacementPipeline {
+  id                 String   @id @default(uuid())
+  studentName        String
+  studentEmail       String
+  challengeTitle     String
+  companyName        String
+  capstoneScore      Float
+  internshipStatus   String   // ACCREDITED_INTERNSHIP | FELLOWSHIP | PROTOTYPING
+  ppoStatus          String   // PPO_OFFERED | INTERNSHIP_ACTIVE | UNDER_EVALUATION
+  accreditedCredits  String
+  verifiedHash       String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
