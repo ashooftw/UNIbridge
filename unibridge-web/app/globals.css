@@ -4,30 +4,32 @@
 
 @layer base {
   :root {
-    /* Soft Pastel Light Mode (Institutional Ayush/AIIA Palette) */
+    /* Light Mode (Institutional Ayush/AIIA Emerald Palette) */
     --background: #F8FAFC;
     --foreground: #0F172A;
     --card-bg: #FFFFFF;
     --card-fg: #0F172A;
     --primary-accent: #0D9488;
+    --primary-hover: #0F766E;
     --primary-fg: #FFFFFF;
     --muted-bg: #F1F5F9;
     --muted-fg: #64748B;
-    --border-color: #E2E8F0;
+    --border-color: rgba(226, 232, 240, 0.8);
     --ring-color: #0D9488;
   }
 
   .dark {
-    /* Warm Charcoal Dark Mode (Warm Amber Glow Palette) */
+    /* Dark Mode (Warm Charcoal & Amber Glow Palette) */
     --background: #0F1117;
     --foreground: #F8FAFC;
     --card-bg: #181B23;
     --card-fg: #F8FAFC;
     --primary-accent: #F59E0B;
+    --primary-hover: #D97706;
     --primary-fg: #0F1117;
-    --muted-bg: #212631;
+    --muted-bg: #1E222D;
     --muted-fg: #94A3B8;
-    --border-color: #262B35;
+    --border-color: rgba(38, 43, 53, 0.8);
     --ring-color: #F59E0B;
   }
 }
@@ -42,9 +44,22 @@ body {
 
 @layer utilities {
   .glass-card {
-    @apply backdrop-blur-md bg-white/70 dark:bg-[#181B23]/70 border border-border;
+    @apply backdrop-blur-md bg-white/80 dark:bg-[#181B23]/80 border border-border;
   }
   .card-hover {
     @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
   }
+  .pulse-glow {
+    animation: pulseGlow 2s infinite ease-in-out;
+  }
 }
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(13, 148, 136, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(13, 148, 136, 0.4);
+  }
+}
+

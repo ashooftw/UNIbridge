@@ -227,7 +227,7 @@ export default function LandingPage() {
                   3
                 </div>
                 <h4 className="text-base font-bold text-foreground">Direct Placement Pipeline</h4>
-                <p className="text-xs text-muted-flow leading-relaxed">
+                <p className="text-xs text-muted-fg leading-relaxed">
                   Convert top-performing capstone students directly into paid interns and accredited PPO candidates.
                 </p>
               </div>

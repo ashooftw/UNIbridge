@@ -101,6 +101,11 @@ def match_endpoint(request: MatchRequest):
         overlap = len(prob_words.intersection(course_words))
         score = round(min(45.0 + (overlap * 8.5), 96.0), 1)
 
+        for outcome in request.course_learning_outcomes:
+            out_words = set(outcome.lower().split())
+            if len(prob_words.intersection(out_words)) > 0:
+                matched_outcomes.append(outcome)
+
     if not matched_outcomes and request.course_learning_outcomes:
         matched_outcomes = [request.course_learning_outcomes[0]]
 
