@@ -1,22 +1,23 @@
 # UNIBRIDGE — Master Project Documentation & Specification
 
-> **Smart India Hackathon (SIH 2026) Prototype**  
-> **Problem Statement**: PS 26044 — Next-Generation University–Industry Collaboration & Continuous Curriculum Modernization Platform  
-> **Mission**: *"From Academic Knowledge to Industry Solutions — Bridging Higher Education and Industrial R&D"*  
+> **Smart India Hackathon (SIH 2026) Prototype**
+> **Problem Statement**: PS 26044 — Next-Generation University–Industry Collaboration & Continuous Curriculum Modernization Platform
+> **Mission**: *"From Academic Knowledge to Industry Solutions — Bridging Higher Education and Industrial R&D"*
 > Operationalizing NEP 2020 & UGC Industry-Linkage Guidelines.
 
 ---
 
 ## 📋 Table of Contents
+
 1. [Executive Summary & Vision](#1-executive-summary--vision)
 2. [Key Architecture & Core Pillars](#2-key-architecture--core-pillars)
-3. [Dual-Theme Design System & Palette Specifications](#3-dual-theme-design-system--palette-specifications)
-4. [AI Semantic Matching Engine (Python FastAPI)](#4-ai-semantic-matching-engine-python-fastapi)
-5. [Database Schema & Data Models (Prisma ORM)](#5-database-schema--data-models-prisma-orm)
-6. [Frontend & Service Directory Architecture](#6-frontend--service-directory-architecture)
+3. [Dual-Theme Design System](#3-dual-theme-design-system)
+4. [AI Semantic Matching Engine](#4-ai-semantic-matching-engine)
+5. [Database Schema & Data Models](#5-database-schema--data-models)
+6. [Frontend & Service Directory Structure](#6-frontend--service-directory-structure)
+7. [Project Status & Health Report](#7-project-status--health-report)
 8. [Quick Start & Setup Guide](#8-quick-start--setup-guide)
-9. [Full Master Code Listings](#9-full-master-code-listings)
-10. [Stitch Design System & Component Architecture](#10-stitch-design-system--component-architecture)
+9. [Stitch Design System & Component Architecture](#9-stitch-design-system--component-architecture)
 
 ---
 
@@ -24,498 +25,249 @@
 
 UNIBRIDGE is an end-to-end digital ecosystem designed to bridge the gap between Indian university curricula and real-world industrial research & development. Built specifically for the **Smart India Hackathon (SIH 2026)**, the platform replaces outdated 3–5 year manual syllabus revision cycles with a real-time, empirical data feedback loop driven by AI.
 
-### Key Objectives:
-- **Operationalize NEP 2020**: Directly facilitate credit-mapped internships, capstone R&D projects, and industry-sponsored hackathon challenges.
-- **Empirical Skill Telemetry**: Automatically flag emerging industry skill deficits and deliver actionable telemetry directly to University Boards of Studies.
-- **AI Vector Matching**: Utilize transformer-based semantic vector embeddings (`all-MiniLM-L6-v2`) to match student capabilities and course learning outcomes with real enterprise engineering bottlenecks.
+### Key Objectives
+
+- **Operationalize NEP 2020** — Directly facilitate credit-mapped internships, capstone R&D projects, and industry-sponsored hackathon challenges.
+- **Empirical Skill Telemetry** — Automatically flag emerging industry skill deficits and deliver actionable telemetry directly to University Boards of Studies.
+- **AI Vector Matching** — Utilize transformer-based semantic vector embeddings to match student capabilities and course learning outcomes with real enterprise engineering bottlenecks.
 
 ---
 
 ## 2. Key Architecture & Core Pillars
 
-UniBridge integrates four core functional pillars into a closed-loop platform:
+UniBridge integrates four core functional pillars into a closed-loop platform. Each pillar serves a distinct role and maps to a dedicated route in the application.
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                          UNIBRIDGE PLATFORM                            │
-├────────────────────────────────────────────────────────────────────────┤
-│  Pillar A: Industry Problem Repository     (/repository)               │
-│  Pillar B: AI Academic Matching Engine     (/matching)                 │
-│  Pillar C: Placement & Internship Pipeline (/pipeline)                 │
-│  Pillar D: Skill-Gap Telemetry Hub         (/telemetry)                │
-└────────────────────────────────────────────────────────────────────────┘
-```
+### Pillar A — Industry Problem Repository
 
-1. **Pillar A: Industry Problem Repository (`/repository`, `/problems/new`)**
-   - Enterprise & MSME engineering bottleneck submission schema.
-   - Categorized by difficulty level (`BEGINNER`, `INTERMEDIATE`, `ADVANCED`), target deliverables, dataset access flags, sprint timelines, and required skill matrices.
+**Route**: `/repository`, `/problems/new`
 
-2. **Pillar B: AI Academic Matching Engine (`/matching`)**
-   - Python FastAPI microservice calculating vector cosine similarity between industry challenges and UGC course learning outcomes.
-   - Provides instant percentage match scoring (0–100%), NEP credit classification recommendations, and student skill-gap breakdowns.
+This pillar allows enterprises and MSMEs to submit their real engineering bottlenecks and R&D challenges into a structured, searchable repository. Each problem statement is categorized by difficulty level (Beginner, Intermediate, Advanced), target deliverables, dataset availability, sprint timelines, and the specific skill matrices required to solve them. Faculty and students can browse this repository to find projects aligned with their academic interests and capabilities.
 
-3. **Pillar C: Student Project & Placement Pipeline (`/pipeline`)**
-   - Collaborative capstone, fellowship, and internship project sprint tracking.
-   - Dual mentorship tracking between corporate engineers and university faculty advisors with verified hash tracking.
+### Pillar B — AI Academic Matching Engine
 
-4. **Pillar D: Skill-Gap Telemetry & Feedback Hub (`/telemetry`)**
-   - Aggregates missing skills from industry challenges against course outcomes.
-   - Generates empirical feedback reports sent to University Boards of Studies for dynamic syllabus upgrades.
+**Route**: `/matching`
+
+The heart of the platform — a Python FastAPI microservice that calculates vector cosine similarity between industry challenges and UGC course learning outcomes. It provides instant percentage match scoring (0–100%), NEP credit classification recommendations, and detailed student skill-gap breakdowns. This enables data-driven decisions about which industry problems are best suited for which academic programs.
+
+### Pillar C — Student Project & Placement Pipeline
+
+**Route**: `/pipeline`
+
+A collaborative workspace for managing capstone projects, fellowships, and internships from start to finish. It tracks sprint progress, dual mentorship assignments (corporate engineers paired with university faculty advisors), and student performance. The pipeline also handles placement outcomes, including Pre-Placement Offer (PPO) tracking and NEP credit accreditation status with verified hash tracking for audit integrity.
+
+### Pillar D — Skill-Gap Telemetry & Feedback Hub
+
+**Route**: `/telemetry`
+
+The feedback-loop engine. This pillar aggregates missing skills identified across all industry challenges and compares them against existing course learning outcomes. It then generates empirical feedback reports — complete with deficit scores and actionable curriculum recommendations — that are sent directly to University Boards of Studies. This enables dynamic, evidence-based syllabus upgrades rather than slow, opinion-driven revision cycles.
 
 ---
 
-## 3. Dual-Theme Design System & Palette Specifications
+## 3. Dual-Theme Design System
 
 UniBridge features an instant, zero-lag theme switching system powered by `next-themes` and custom CSS variable tokens, switchable via the application header.
 
 ### ☀️ Soft Pastel Light Mode
-- **Background**: `#F8FAFC` (Slate-50 Canvas)
-- **Cards & Surfaces**: `#EDF2F7` (Soft Slate-Blue Containers)
-- **Primary Accents**: `#0D9488` (Muted Teal / Emerald Gradient)
-- **Typography**: `#1E293B` (Deep Slate Charcoal)
+
+| Element | Value | Description |
+| :--- | :--- | :--- |
+| Background | `#F8FAFC` | Slate-50 canvas — clean, professional base |
+| Cards & Surfaces | `#EDF2F7` | Soft slate-blue containers for elevated content |
+| Primary Accents | `#0D9488` | Muted teal / emerald gradient for interactive elements |
+| Typography | `#1E293B` | Deep slate charcoal for sharp readability |
 
 ### 🌙 Warm Charcoal & Amber Dark Mode
-- **Background**: `#121417` (Warm Deep Charcoal Canvas)
-- **Cards & Surfaces**: `#1E232B` (Slate-Gray Container Elevators)
-- **Primary Accents**: `#F59E0B` (Warm Amber & Gold Accents)
-- **Typography**: `#F1F5F9` (Crisp Off-White)
+
+| Element | Value | Description |
+| :--- | :--- | :--- |
+| Background | `#121417` | Warm deep charcoal canvas — easy on the eyes |
+| Cards & Surfaces | `#1E232B` | Slate-gray container elevators for depth |
+| Primary Accents | `#F59E0B` | Warm amber & gold accents for focus and contrast |
+| Typography | `#F1F5F9` | Crisp off-white for comfortable reading |
 
 ---
 
-## 4. AI Semantic Matching Engine (Python FastAPI)
+## 4. AI Semantic Matching Engine
 
-The AI engine lives in `unibridge-ai/` and operates as an independent microservice.
+The AI engine lives in the `unibridge-ai/` directory and operates as an independent microservice, completely decoupled from the Next.js frontend.
 
-### Microservice Specifications:
-- **Framework**: Python 3.14, FastAPI, Uvicorn
-- **NLP Model**: `sentence-transformers/all-MiniLM-L6-v2` (384-dimensional dense vector space)
-- **Fallback Mechanism**: TF-IDF & Jaccard token-overlap matching if PyTorch/Transformers are unavailable
+### Technology Stack
 
-### NEP Credit Classification Matrix:
+- **Framework**: Python 3.14 with FastAPI and Uvicorn
+- **NLP Model**: `sentence-transformers/all-MiniLM-L6-v2` — produces 384-dimensional dense vector embeddings
+- **Fallback Mechanism**: If PyTorch or Transformers are unavailable (e.g., lightweight deployment), the engine automatically falls back to TF-IDF and Jaccard token-overlap matching
+
+### How Matching Works
+
+1. The industry problem description and its required skills are concatenated into a single text block.
+2. All course learning outcomes are combined into a second text block.
+3. Both blocks are encoded into 384-dimensional vector embeddings using the sentence-transformer model.
+4. A cosine similarity score is computed between the two vectors, then normalized to a 0–100% scale.
+5. Each individual course outcome is also compared against the problem to identify specifically which outcomes align.
+6. Student skills are compared against the problem's required skills to generate a skill-gap analysis (possessed vs. missing).
+7. An automated academician feedback note is generated for the University Board of Studies, recommending specific syllabus updates.
+
+### NEP Credit Classification Matrix
+
+Based on the match score, the engine classifies the result into one of three NEP credit tiers:
+
 | Score Range | NEP Credit Classification | Recommended Action |
 | :--- | :--- | :--- |
-| **75.0% - 100.0%** | Direct NEP Credit Alignment | Mandatory Industry Internship / Capstone (4 Credits) |
-| **50.0% - 74.9%** | Mandatory Industry Internship | Minor Capstone / Mandatory Internship (2–3 Credits) |
-| **0.0% - 49.9%** | Elective Capstone R&D | Non-credit R&D Fellowship / Hackathon Project |
+| **75.0% – 100.0%** | Direct NEP Credit Alignment | Mandatory Industry Internship / Capstone (4 Credits) |
+| **50.0% – 74.9%** | Mandatory Industry Internship | Minor Capstone / Mandatory Internship (2–3 Credits) |
+| **0.0% – 49.9%** | Elective Capstone R&D | Non-credit R&D Fellowship / Hackathon Project |
 
-### REST API Endpoints:
+### API Endpoints
 
-#### `GET /health`
-Returns operational status and loaded model details.
+The microservice exposes two endpoints:
 
-#### `POST /api/match`
-Computes match score, classification, skill gaps, and Board of Studies feedback note.
+- **`GET /health`** — Returns operational status, service name, and the currently loaded NLP model. Useful for health-check monitoring.
+- **`POST /api/match`** — The primary endpoint. Accepts a problem description, required skills, course learning outcomes, and (optionally) student skills. Returns a match score, NEP classification, skill-gap analysis (possessed vs. missing skills), matched outcomes, reasoning text, and an automated feedback note for the Board of Studies.
 
-**Request Schema (`MatchRequest`)**:
-```json
-{
-  "problem_description": "Develop a real-time computer vision system for metal surface defect detection",
-  "problem_skills": ["Python", "PyTorch", "OpenCV", "TensorRT", "MQTT"],
-  "course_learning_outcomes": [
-    "Design convolutional neural networks for object detection",
-    "Implement real-time video stream processing pipelines",
-    "Deploy optimized models on edge GPU hardware"
-  ],
-  "student_skills": ["Python", "PyTorch", "OpenCV"]
-}
-```
-
-**Response Schema (`MatchResponse`)**:
-```json
-{
-  "match_score": 88.5,
-  "classification": "Direct NEP Credit Alignment (Mandatory Industry Internship / Capstone - 4 Credits)",
-  "skill_gap_analysis": {
-    "possessed": ["Python", "PyTorch", "OpenCV"],
-    "missing": ["TensorRT", "MQTT"]
-  },
-  "academician_telemetry_note": "Deficit identified in TensorRT, MQTT integration within Semester 6 coursework. Recommend updating university Board of Studies syllabus to incorporate practical modules for TensorRT to improve industry readiness score by +24%.",
-  "reasoning": "High semantic vector alignment (88.5%). Directly satisfies core degree capstone & Ayush industry outcome requirements.",
-  "matched_outcomes": [
-    "Design convolutional neural networks for object detection",
-    "Implement real-time video stream processing pipelines"
-  ]
-}
-```
+Interactive API documentation is auto-generated at `/docs` (Swagger UI) when the service is running.
 
 ---
 
-## 5. Database Schema & Data Models (Prisma ORM)
+## 5. Database Schema & Data Models
 
-The application uses Prisma ORM configured with SQLite for zero-config offline demonstration (`dev.db`), and supports production PostgreSQL out-of-the-box.
+The application uses **Prisma ORM** configured with **SQLite** for zero-config offline demonstration, and supports production **PostgreSQL** out-of-the-box by changing the datasource provider.
 
-### Key Database Models:
-- **`User`**: Account profiles for Students, Faculty, Industry Partners, and Admins.
-- **`ProblemStatement`**: Industry challenge listings with skills, difficulty ratings, and deliverables.
-- **`CourseOutcome`**: Departmental course learning outcomes and prerequisite skills.
-- **`SkillGapTelemetry`**: Deficit logging for Board of Studies curriculum updates.
-- **`PlacementPipeline`**: Student project performance, credit accreditation status, and corporate PPO tracking.
+### Data Models
 
-### Seeded Industry Benchmarks (Initial Database State):
-1. **Tata MSME Logistics**: *MSME Supply Chain Route Optimization & Inventory Telemetry*
-2. **Bharat Forge Quality Automation Labs**: *Computer Vision Metal Surface Defect Detection*
-3. **Razorpay Payment Labs**: *FinTech Real-Time Microservice Fraud Scoring Engine*
-4. **Mahindra Agri Solutions R&D**: *Precision AgriTech Solar Irrigation & Soil Telemetry Monitor*
+| Model | Purpose | Key Fields |
+| :--- | :--- | :--- |
+| **User** | Account profiles for all platform roles | Name, email, role (Student / Faculty / Industry Partner / Admin), department, institution, skills |
+| **ProblemStatement** | Industry challenge listings | Title, company name, description, required skills, target deliverables, difficulty, timeline, mentorship availability |
+| **CourseOutcome** | Departmental course learning outcomes | Department, course name, semester, learning outcomes, prerequisite skills |
+| **SkillGapTelemetry** | Deficit logging for curriculum updates | Department, academic year, skill deficiency, missing tools, deficit score, recommendation, review status |
+| **PlacementPipeline** | Student project performance tracking | Student info, challenge title, company, capstone score, internship status, PPO status, accredited credits, verified hash |
+
+### Seeded Industry Benchmarks
+
+The database comes pre-seeded with four realistic industry problem statements to demonstrate the platform's capabilities immediately after setup:
+
+1. **Tata MSME Logistics** — MSME Supply Chain Route Optimization & Inventory Telemetry
+2. **Bharat Forge Quality Automation Labs** — Computer Vision Metal Surface Defect Detection
+3. **Razorpay Payment Labs** — FinTech Real-Time Microservice Fraud Scoring Engine
+4. **Mahindra Agri Solutions R&D** — Precision AgriTech Solar Irrigation & Soil Telemetry Monitor
 
 ---
 
-## 6. Frontend & Service Directory Architecture
+## 6. Frontend & Service Directory Structure
 
-```
-UniBridge/
-├── README.md                      # Primary repository README
-├── PROJECT_STATUS_REPORT.md       # Status report as of Sep 2026
-├── master.md                      # Combined master documentation
-│
-├── unibridge-ai/                  # Python FastAPI AI Matching Engine
-│   ├── main.py                    # Core FastAPI app & vector matching logic
-│   └── requirements.txt           # Python dependencies
-│
-└── unibridge-web/                 # Next.js 14 Frontend & Database
-    ├── app/
-    │   ├── page.tsx               # Main landing page with NEP 2020 banners
-    │   ├── repository/            # Industry challenge browsing grid
-    │   ├── matching/              # Interactive AI vector matching engine dashboard
-    │   ├── telemetry/             # Board of Studies skill-gap telemetry hub
-    │   ├── pipeline/              # Placement & PPO tracking workspace
-    │   ├── login/                 # Demo-preset authentication login
-    │   ├── signup/                # Demo-preset registration form
-    │   ├── problems/new/          # New challenge posting form
-    │   ├── globals.css            # Global CSS custom variables & Tailwind imports
-    │   └── layout.tsx             # Root layout with ThemeProvider & Header
-    ├── components/
-    │   ├── Header.tsx             # Typographical header logo, search, theme toggle
-    │   ├── ThemeProvider.tsx      # Dark/Light theme context provider
-    │   ├── RepositoryClient.tsx   # Interactive problem filtering & display
-    │   ├── TelemetryClient.tsx    # Curriculum defect telemetry UI
-    │   └── PipelineClient.tsx     # Student accreditation & PPO tracking table
-    ├── prisma/
-    │   ├── schema.prisma          # Database models definition
-    │   └── seed.ts                # Database seeder script
-    ├── package.json               # Node.js dependencies
-    └── tailwind.config.ts         # Tailwind CSS styling configuration
-```
+The project is organized into two main directories:
+
+### `unibridge-ai/` — Python FastAPI AI Matching Engine
+
+Contains the FastAPI application (`main.py`) and its Python dependencies (`requirements.txt`). This service runs independently on port 8000.
+
+### `unibridge-web/` — Next.js 14 Frontend & Database
+
+The main web application, built with Next.js 14 (App Router), Tailwind CSS, and Prisma ORM.
+
+**Key application routes:**
+
+| Route | Purpose |
+| :--- | :--- |
+| `/` (Landing Page) | Main entry point with NEP 2020 banners and platform overview |
+| `/repository` | Industry challenge browsing grid with filtering |
+| `/matching` | Interactive AI vector matching engine dashboard |
+| `/telemetry` | Board of Studies skill-gap telemetry hub |
+| `/pipeline` | Placement & PPO tracking workspace |
+| `/login` | Demo-preset authentication login |
+| `/signup` | Demo-preset registration form |
+| `/problems/new` | New industry challenge posting form |
+
+**Key components:**
+
+| Component | Responsibility |
+| :--- | :--- |
+| Header | Typographical header logo, search bar, and dark/light theme toggle |
+| ThemeProvider | Dark/Light theme context provider wrapping the app |
+| RepositoryClient | Interactive problem filtering, search, and display |
+| TelemetryClient | Curriculum deficit telemetry visualization and feedback UI |
+| PipelineClient | Student accreditation and PPO tracking table |
+
+**Data layer:**
+
+- Prisma schema defines all data models (see Section 5)
+- Seed script populates the database with initial industry benchmarks
+- SQLite database file (`dev.db`) is generated locally for zero-config demos
 
 ---
 
 ## 7. Project Status & Health Report
 
-- **Web Frontend**: 100% Operational. Compiles cleanly with 0 TypeScript and 0 ESLint errors.
-- **AI Service**: 100% Operational. Fast response time for vector embedding calculation.
-- **Prisma Synchronization**: Database generated and pre-seeded.
+| Component | Status | Notes |
+| :--- | :--- | :--- |
+| Web Frontend (Next.js) | ✅ 100% Operational | Compiles cleanly — 0 TypeScript errors, 0 ESLint errors |
+| AI Matching Service (FastAPI) | ✅ 100% Operational | Fast response time for vector embedding calculation |
+| Database (Prisma + SQLite) | ✅ Synchronized | Schema generated and pre-seeded with benchmark data |
 
 ---
 
 ## 8. Quick Start & Setup Guide
 
-### 1. Start AI Matching Engine (Python FastAPI)
-```bash
-cd unibridge-ai
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python3 main.py
-```
-- API Running at: `http://127.0.0.1:8000`
-- Interactive Swagger Documentation: `http://127.0.0.1:8000/docs`
+### Step 1 — Start the AI Matching Engine
 
-### 2. Start Web Application (Next.js 14)
-```bash
-cd unibridge-web
-npm install
-npx prisma db push
-npx tsx prisma/seed.ts
-npm run dev
-```
-- Web Application Running at: `http://localhost:3000`
+1. Navigate to the `unibridge-ai` directory.
+2. Create and activate a Python virtual environment.
+3. Install the dependencies from `requirements.txt`.
+4. Run `main.py` to start the FastAPI server.
 
----
+The API will be available at `http://127.0.0.1:8000`, with interactive Swagger documentation at `http://127.0.0.1:8000/docs`.
 
-## 9. Full Master Code Listings
+### Step 2 — Start the Web Application
 
-### A. Prisma Schema (`unibridge-web/prisma/schema.prisma`)
-```prisma
-// Prisma schema for UNIBRIDGE Platform (SIH 2026 PS 26044)
+1. Navigate to the `unibridge-web` directory.
+2. Install Node.js dependencies with `npm install`.
+3. Push the Prisma schema to generate the database with `npx prisma db push`.
+4. Seed the database with benchmark data using `npx tsx prisma/seed.ts`.
+5. Start the development server with `npm run dev`.
 
-generator client {
-  provider = "prisma-client-js"
-}
+The web application will be available at `http://localhost:3000`.
 
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
-
-model User {
-  id          String   @id @default(uuid())
-  name        String
-  email       String   @unique
-  role        String   // STUDENT | FACULTY | INDUSTRY_PARTNER | ADMIN
-  department  String?
-  institution String?
-  skills      String   // Comma-separated list of skills
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model ProblemStatement {
-  id                  String   @id @default(uuid())
-  title               String
-  companyName         String
-  description         String
-  requiredSkills      String   // Comma-separated list of skills
-  targetDeliverables  String
-  difficulty          String   // BEGINNER | INTERMEDIATE | ADVANCED
-  timelineWeeks       Int      @default(12)
-  mentorshipAvailable Boolean  @default(true)
-  targetAudience      String   @default("Undergraduate Capstone / Interns")
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-}
-
-model CourseOutcome {
-  id                 String   @id @default(uuid())
-  department         String
-  courseName         String
-  semester           Int
-  learningOutcomes   String   // Text / JSON representation of outcomes
-  prerequisiteSkills String   // Comma-separated prerequisites
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-}
-
-model SkillGapTelemetry {
-  id                       String   @id @default(uuid())
-  department               String
-  academicYear             String
-  skillDeficiency          String
-  missingTools             String   // Comma-separated list of missing tools
-  aggregateDeficitScore    Float
-  curriculumRecommendation String
-  status                   String   @default("FLAGGED") // FLAGGED, UNDER_REVIEW, INTEGRATED
-  createdAt                DateTime @default(now())
-  updatedAt                DateTime @updatedAt
-}
-
-model PlacementPipeline {
-  id                 String   @id @default(uuid())
-  studentName        String
-  studentEmail       String
-  challengeTitle     String
-  companyName        String
-  capstoneScore      Float
-  internshipStatus   String   // ACCREDITED_INTERNSHIP | FELLOWSHIP | PROTOTYPING
-  ppoStatus          String   // PPO_OFFERED | INTERNSHIP_ACTIVE | UNDER_EVALUATION
-  accreditedCredits  String
-  verifiedHash       String
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-}
-```
-
-### B. Python AI Service (`unibridge-ai/main.py`)
-```python
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import List, Optional, Dict
-import numpy as np
-
-app = FastAPI(
-    title="UNIBRIDGE AI Semantic Matching Engine",
-    description="FastAPI service for computing vector cosine similarity between industry challenges and course learning outcomes using sentence-transformers.",
-    version="1.1.0"
-)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-_model = None
-
-def get_model():
-    global _model
-    if _model is None:
-        try:
-            from sentence_transformers import SentenceTransformer
-            print("Loading sentence-transformers/all-MiniLM-L6-v2...")
-            _model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-            print("Model loaded successfully!")
-        except Exception as e:
-            print(f"Warning: Could not load SentenceTransformer ({e}). Falling back to TF-IDF cosine similarity.")
-            _model = "FALLBACK"
-    return _model
-
-def cosine_similarity(v1, v2):
-    norm1 = np.linalg.norm(v1)
-    norm2 = np.linalg.norm(v2)
-    if norm1 == 0 or norm2 == 0:
-        return 0.0
-    return float(np.dot(v1, v2) / (norm1 * norm2))
-
-class SkillGapAnalysis(BaseModel):
-    possessed: List[str]
-    missing: List[str]
-
-class MatchRequest(BaseModel):
-    problem_description: str
-    problem_skills: List[str]
-    course_learning_outcomes: List[str]
-    student_skills: Optional[List[str]] = []
-
-class MatchResponse(BaseModel):
-    match_score: float
-    classification: str
-    skill_gap_analysis: SkillGapAnalysis
-    academician_telemetry_note: str
-    reasoning: str
-    matched_outcomes: List[str]
-
-@app.get("/health")
-def health_check():
-    return {
-        "status": "online",
-        "service": "UNIBRIDGE AI Service (PS 26044)",
-        "model": "sentence-transformers/all-MiniLM-L6-v2"
-    }
-
-@app.post("/api/match", response_model=MatchResponse)
-def match_endpoint(request: MatchRequest):
-    model = get_model()
-
-    problem_text = f"{request.problem_description}. Skills required: {', '.join(request.problem_skills)}"
-    outcomes_text = " ".join(request.course_learning_outcomes)
-
-    matched_outcomes = []
-    
-    if model != "FALLBACK" and model is not None:
-        try:
-            prob_emb = model.encode(problem_text, convert_to_numpy=True)
-            course_emb = model.encode(outcomes_text, convert_to_numpy=True)
-
-            raw_sim = cosine_similarity(prob_emb, course_emb)
-            
-            # Normalize percentage score between 40% and 98.5%
-            score = round(min(max(raw_sim * 100 * 1.25, 40.0), 98.5), 1)
-
-            # Find specific matched outcomes
-            for outcome in request.course_learning_outcomes:
-                out_emb = model.encode(outcome, convert_to_numpy=True)
-                if cosine_similarity(prob_emb, out_emb) > 0.20:
-                    matched_outcomes.append(outcome)
-
-        except Exception as e:
-            print(f"Transformer calculation error: {e}")
-            score = 84.5
-    else:
-        # Fallback term overlap calculation
-        prob_words = set(f"{problem_text} {' '.join(request.student_skills or [])}".lower().split())
-        course_words = set(outcomes_text.lower().split())
-        overlap = len(prob_words.intersection(course_words))
-        score = round(min(45.0 + (overlap * 8.5), 96.0), 1)
-
-        for outcome in request.course_learning_outcomes:
-            out_words = set(outcome.lower().split())
-            if len(prob_words.intersection(out_words)) > 0:
-                matched_outcomes.append(outcome)
-
-    if not matched_outcomes and request.course_learning_outcomes:
-        matched_outcomes = [request.course_learning_outcomes[0]]
-
-    # Compute Skill Gap Analysis (possessed vs missing)
-    student_skills_lower = [s.strip().lower() for s in (request.student_skills or [])]
-    possessed = []
-    missing = []
-
-    for skill in request.problem_skills:
-        skill_clean = skill.strip()
-        skill_lower = skill_clean.lower()
-        if any(s in skill_lower or skill_lower in s for s in student_skills_lower):
-            possessed.append(skill_clean)
-        else:
-            missing.append(skill_clean)
-
-    # Automated Empirical Feedback Note for University Syllabus Committees
-    if missing:
-        missing_str = ", ".join(missing[:3])
-        academician_telemetry_note = (
-            f"Deficit identified in {missing_str} integration within Semester 6 coursework. "
-            f"Recommend updating university Board of Studies syllabus to incorporate practical modules for {missing[0]} "
-            f"to improve industry readiness score by +{min(len(missing) * 12, 35)}%."
-        )
-    else:
-        academician_telemetry_note = (
-            "Curriculum outcomes demonstrate 100% alignment with target Ayush & Industry skill matrix. "
-            "Syllabus up to date for current academic year."
-        )
-
-    # Determine credit classification per PS 26044 requirement
-    if score >= 75.0:
-        classification = "Direct NEP Credit Alignment (Mandatory Industry Internship / Capstone - 4 Credits)"
-        reasoning = f"High semantic vector alignment ({score}%). Directly satisfies core degree capstone & Ayush industry outcome requirements."
-    elif score >= 50.0:
-        classification = "Mandatory Industry Internship (2-3 NEP Credits)"
-        reasoning = f"Moderate semantic vector alignment ({score}%). Recommends claiming as a mandatory industry internship or minor capstone."
-    else:
-        classification = "Elective Capstone R&D / Ayush Innovation Fellowship"
-        reasoning = f"Baseline alignment ({score}%). Recommends claiming for non-credit R&D fellowship or hackathon project."
-
-    return MatchResponse(
-        match_score=score,
-        classification=classification,
-        skill_gap_analysis=SkillGapAnalysis(possessed=possessed, missing=missing),
-        academician_telemetry_note=academician_telemetry_note,
-        reasoning=reasoning,
-        matched_outcomes=matched_outcomes
-    )
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
-```
-
-### C. Python Requirements (`unibridge-ai/requirements.txt`)
-```text
-fastapi>=0.109.0
-uvicorn>=0.27.0
-pydantic>=2.5.0
-sentence-transformers>=2.3.0
-torch>=2.0.0
-scikit-learn>=1.4.0
-numpy>=1.26.0
-```
+> **Note**: The web frontend connects to the AI service at `http://127.0.0.1:8000` for matching requests. Make sure the AI engine is running before using the matching dashboard.
 
 ---
 
-## 10. Stitch Design System & Component Architecture
+## 9. Stitch Design System & Component Architecture
 
 UniBridge utilizes a modern **Stitch UI** design framework, combining high-contrast glassmorphism, dynamic vector score gauges, interactive curriculum mapping, and empirical telemetry charts.
 
-### A. Core Design Tokens
-* **Color System**:
-  * Base Canvas (Dark Mode): `#0B0F17` (Midnight Charcoal)
-  * Glass Surface: `#161B26` with `backdrop-filter: blur(16px)` and `border: 1px solid rgba(255, 255, 255, 0.1)`
-  * Primary Gradient: Deep Emerald/Teal to Indigo (`#0D9488` $\rightarrow$ `#4F46E5`)
-  * Accent Colors: Amber Gold (`#F59E0B`), Cyan (`#06B6D4`), Rose Deficit (`#F43F5E`)
-* **Typography**: *Plus Jakarta Sans* / *Inter* with gradient text clips (`bg-clip-text text-transparent bg-gradient-to-r`).
+### Core Design Tokens
 
-### B. Stitch Component Catalog
+**Color System:**
 
-#### 1. `AIMatchGauge` (`components/AIMatchGauge.tsx`)
-Custom animated SVG radial gauge displaying 384-dimensional vector similarity match scores (0–100%), stroke dashoffset calculation, ambient background glow, and NEP 2020 credit approval badge.
+| Token | Value | Usage |
+| :--- | :--- | :--- |
+| Base Canvas (Dark) | `#0B0F17` | Midnight charcoal background |
+| Glass Surface | `#161B26` | Glassmorphic panels with backdrop blur and subtle borders |
+| Primary Gradient | `#0D9488` → `#4F46E5` | Deep emerald-teal to indigo for key interactive elements |
+| Accent: Amber Gold | `#F59E0B` | Warm highlights and call-to-action elements |
+| Accent: Cyan | `#06B6D4` | Data visualization and secondary highlights |
+| Accent: Rose Deficit | `#F43F5E` | Deficit indicators and warning states |
 
-#### 2. `GlassCard` (`components/GlassCard.tsx`)
-Glassmorphic container component with backdrop blur, hover-lift translation (`-translate-y-1`), and customizable glow colors (`teal`, `indigo`, `amber`, `purple`).
+**Typography:** Plus Jakarta Sans / Inter font families with gradient text clips for headings.
 
-#### 3. `SkillTelemetryChart` (`components/SkillTelemetryChart.tsx`)
-Graphical deficit telemetry comparing industry technology demand percentages against university syllabus coverage, featuring an automated feedback note generator for Board of Studies curriculum updates.
+### Component Catalog
 
-#### 4. `SyllabusMapper` (`components/SyllabusMapper.tsx`)
-Side-by-side mapping grid connecting industry project deliverables directly with university course learning outcomes (e.g. `CS401`, `CS302`).
+#### AIMatchGauge
+
+Custom animated SVG radial gauge that visually displays 384-dimensional vector similarity match scores on a 0–100% scale. Features stroke dashoffset animation, ambient background glow effects, and an NEP 2020 credit approval badge that updates dynamically based on the score tier.
+
+#### GlassCard
+
+Glassmorphic container component with backdrop blur, hover-lift translation for interactivity feedback, and customizable glow colors (teal, indigo, amber, purple). Used across the platform as the primary card surface for all content modules.
+
+#### SkillTelemetryChart
+
+Graphical deficit telemetry visualization that compares industry technology demand percentages against university syllabus coverage. Includes an automated feedback note generator that produces actionable recommendations for Board of Studies curriculum updates.
+
+#### SyllabusMapper
+
+Side-by-side mapping grid that visually connects industry project deliverables directly with specific university course learning outcomes (e.g., CS401, CS302), making curriculum alignment transparent and auditable.
 
 ---
+
 *Generated for UNIBRIDGE — Smart India Hackathon (SIH 2026)*

@@ -4,16 +4,15 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Zap } from "lucide-react";
-import { AutomationDemoModal } from "./AutomationDemoModal";
+
 
 export function Header() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [currentRole, setCurrentRole] = useState("STUDENT");
   const [userProfile, setUserProfile] = useState<any>(null);
   const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
-  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+
   const pathname = usePathname();
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -65,8 +64,7 @@ export function Header() {
   ];
 
   return (
-    <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f131c]/90 backdrop-blur-md border-b border-[#222e40] shadow-[0_4px_24px_rgba(0,0,0,0.5)]">
+      <header className="gradient-border-bottom fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-[#222e40]/50 shadow-[0_4px_30px_rgba(0,0,0,0.2)]" style={{backgroundColor: 'var(--header-bg)'}}>
         <div className="h-16 max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-3">
           
           {/* Brand Logo & Authority Tag */}
@@ -148,16 +146,7 @@ export function Header() {
 
           {/* Right Controls */}
           <div className="flex items-center gap-2.5 shrink-0">
-            {/* 1-Click Automated Walkthrough Button */}
-            <button
-              onClick={() => setIsDemoModalOpen(true)}
-              className="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 font-bold text-[12px] hover:brightness-110 transition-all flex items-center gap-1 shadow-[0_2px_10px_rgba(245,158,11,0.2)]"
-              title="Run 1-Click Automated PS 26044 Pipeline Walkthrough"
-            >
-              <Zap className="w-3.5 h-3.5 fill-slate-950" />
-              <span className="hidden sm:inline">⚡ Run Automated PS 26044</span>
-              <span className="sm:hidden">⚡ Demo</span>
-            </button>
+
 
             {/* Role Switcher Pill Bar */}
             <div className="hidden sm:inline-flex items-center p-0.5 rounded-lg bg-[#121824] border border-[#222e40] font-mono text-[11px]">
@@ -180,13 +169,13 @@ export function Header() {
             {/* Theme Toggle */}
             {mounted && (
               <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
                 aria-label="Toggle visual theme"
                 className="p-1.5 rounded-lg bg-[#121824] border border-[#222e40] text-[#94a3b8] hover:text-amber-400 hover:bg-[#1a2234] transition-colors flex items-center justify-center"
                 type="button"
               >
                 <span className="material-symbols-outlined text-[18px]">
-                  {theme === "dark" ? "dark_mode" : "light_mode"}
+                  {resolvedTheme === "dark" ? "dark_mode" : "light_mode"}
                 </span>
               </button>
             )}
@@ -209,12 +198,7 @@ export function Header() {
         </div>
       </header>
 
-      {/* Render Automation Demo Modal */}
-      <AutomationDemoModal
-        isOpen={isDemoModalOpen}
-        onClose={() => setIsDemoModalOpen(false)}
-      />
-    </>
+
   );
 }
 

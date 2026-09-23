@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -28,26 +28,33 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#0b0f17] font-body text-[#dfe2ee] antialiased selection:bg-amber-500/30 selection:text-amber-200 min-h-screen flex flex-col">
+      <body className="font-body antialiased selection:bg-amber-500/30 selection:text-amber-200 min-h-screen flex flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
-          disableTransitionOnChange
         >
-          <div className="min-h-screen flex flex-col bg-[#0b0f17] text-[#dfe2ee]">
+          <div className="min-h-screen flex flex-col">
             <Header />
             <main className="flex-1 w-full pt-16">{children}</main>
-            <footer className="border-t border-[#222e40] py-6 text-xs text-[#94a3b8] bg-[#0f131c]/80 backdrop-blur-md transition-colors">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="font-headline font-bold text-white text-sm">UniBridge Platform</span>
-                  <span className="px-2 py-0.5 rounded bg-[#161e2e] text-[#a3b18a] border border-[#222e40] font-mono text-[10px]">
+            <footer className="gradient-border-top relative border-t border-[#222e40]/50 py-8 text-xs text-[#94a3b8] backdrop-blur-md transition-colors" style={{backgroundColor: 'var(--footer-bg)'}}>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#f59e0b] to-[#4edea3] text-slate-950 font-black text-[10px] flex items-center justify-center shadow-sm">
+                    UB
+                  </div>
+                  <span className="font-headline font-bold text-sm" style={{color: 'var(--text-on-dark)'}}>UniBridge Platform</span>
+                  <span className="px-2 py-0.5 rounded-full bg-[#161e2e] text-[#a3b18a] border border-[#222e40] font-mono text-[10px]">
                     SIH 2026 • PS 26044
                   </span>
                 </div>
-                <div className="font-mono text-[11px] text-[#94a3b8]">
-                  Ministry of Ayush & AIIA Collaboration • Operationalizing NEP 2020 & UGC NCrF
+                <div className="flex items-center gap-4">
+                  <span className="font-mono text-[11px] text-[#94a3b8]">
+                    Ministry of Ayush & AIIA Collaboration • Operationalizing NEP 2020 & UGC NCrF
+                  </span>
+                  <span className="hidden sm:inline-flex px-2 py-0.5 rounded bg-emerald-500/10 text-[#4edea3] border border-emerald-500/20 font-mono text-[9px] uppercase tracking-wider font-bold">
+                    Built for SIH 2026
+                  </span>
                 </div>
               </div>
             </footer>
