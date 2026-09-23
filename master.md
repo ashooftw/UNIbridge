@@ -146,10 +146,10 @@ The application uses **Prisma ORM** configured with **SQLite** for zero-config o
 
 The database comes pre-seeded with four realistic industry problem statements to demonstrate the platform's capabilities immediately after setup:
 
-1. **Tata MSME Logistics** — MSME Supply Chain Route Optimization & Inventory Telemetry
-2. **Bharat Forge Quality Automation Labs** — Computer Vision Metal Surface Defect Detection
-3. **Razorpay Payment Labs** — FinTech Real-Time Microservice Fraud Scoring Engine
-4. **Mahindra Agri Solutions R&D** — Precision AgriTech Solar Irrigation & Soil Telemetry Monitor
+1. **AIIA & Dabur R&D** — Computer Vision Botanical Adulteration & Raw Herb Authentication
+2. **Baidyanath Ayurvedic Labs** — IoT Sensor Telemetry for Automated Temperature & Fermentation Control in Asava/Arishta Formulations
+3. **Ministry of Ayush Digital Health Mission** — Ayush EHR: FHIR/ABDM Standardized Clinical Telemetry & Prakriti Assessment Engine
+4. **National Medicinal Plants Board (NMPB)** — Supply Chain Provenance & Traceability for Medicinal Herb Cultivators using Geo-Tagging
 
 ---
 

@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Header } from "@/components/Header";
 
@@ -17,16 +18,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/logo.png" type="image/png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* eslint-disable @next/next/no-page-custom-font */}
         <link
           href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
           rel="stylesheet"
         />
+        {/* eslint-enable @next/next/no-page-custom-font */}
       </head>
       <body className="font-body antialiased selection:bg-amber-500/30 selection:text-amber-200 min-h-screen flex flex-col">
         <ThemeProvider
@@ -40,10 +44,13 @@ export default function RootLayout({
             <footer className="gradient-border-top relative border-t border-[#222e40]/50 py-8 text-xs text-[#94a3b8] backdrop-blur-md transition-colors" style={{backgroundColor: 'var(--footer-bg)'}}>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#f59e0b] to-[#4edea3] text-slate-950 font-black text-[10px] flex items-center justify-center shadow-sm">
-                    UB
-                  </div>
-                  <span className="font-headline font-bold text-sm" style={{color: 'var(--text-on-dark)'}}>UniBridge Platform</span>
+                  <Image
+                    src="/logo.png"
+                    alt="UniBridge Logo"
+                    width={100}
+                    height={34}
+                    className="h-7 w-auto object-contain"
+                  />
                   <span className="px-2 py-0.5 rounded-full bg-[#161e2e] text-[#a3b18a] border border-[#222e40] font-mono text-[10px]">
                     SIH 2026 • PS 26044
                   </span>

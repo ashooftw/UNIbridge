@@ -72,6 +72,10 @@ const config: Config = {
           foreground: "#94a3b8",
         },
         border: "#222e40",
+        foreground: "#f8fafc",
+        "primary-fg": "#472a00",
+        "muted-fg": "#94a3b8",
+        ring: "#f59e0b",
       },
       borderRadius: {
         DEFAULT: "0.25rem",

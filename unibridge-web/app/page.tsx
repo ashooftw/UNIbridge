@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
 
 /* ── Animated Counter Hook ──────────────────────────────────────────── */
@@ -172,6 +173,18 @@ export default function LandingPage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
+
+          {/* Logo */}
+          <div className="flex items-center justify-center animate-fade-in-up mb-2">
+            <Image
+              src="/logo.png"
+              alt="UniBridge Logo"
+              width={220}
+              height={76}
+              className="h-20 w-auto object-contain"
+              priority
+            />
+          </div>
 
           {/* Badge */}
           <div className="flex items-center justify-center animate-fade-in-up">

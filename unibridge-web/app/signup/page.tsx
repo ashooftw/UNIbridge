@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { BookOpen, Layers, Cpu, Mail, User, Building, CheckCircle2, AlertCircle, Sparkles, HeartPulse } from "lucide-react";
 
@@ -52,7 +53,15 @@ export default function SignupPage() {
       <div className="w-full max-w-lg space-y-6">
         
         {/* Top Header */}
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-3">
+          <Image
+            src="/logo.png"
+            alt="UniBridge Logo"
+            width={180}
+            height={62}
+            className="h-14 w-auto object-contain mx-auto"
+            priority
+          />
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold border border-primary/20">
             <HeartPulse className="w-3.5 h-3.5" />
             Institutional Portal Signup (SIH 2026 PS 26044)

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 
@@ -70,12 +71,14 @@ export function Header() {
           {/* Brand Logo & Authority Tag */}
           <div className="flex items-center gap-3 shrink-0">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#f59e0b] to-[#4edea3] text-slate-950 font-black text-sm flex items-center justify-center shadow-[0_0_12px_rgba(245,158,11,0.3)]">
-                UB
-              </div>
-              <span className="font-headline font-bold text-[18px] text-white tracking-tight">
-                Uni<span className="text-[#f59e0b]">Bridge</span>
-              </span>
+              <Image
+                src="/logo.png"
+                alt="UniBridge Logo"
+                width={140}
+                height={48}
+                className="h-10 w-auto object-contain"
+                priority
+              />
             </Link>
             <div className="hidden xl:flex flex-col justify-center border-l border-[#222e40] pl-3">
               <div className="flex items-center gap-1.5">

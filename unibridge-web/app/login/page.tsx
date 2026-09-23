@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 
@@ -64,7 +65,15 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-6">
         
         {/* Header */}
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-3">
+          <Image
+            src="/logo.png"
+            alt="UniBridge Logo"
+            width={180}
+            height={62}
+            className="h-14 w-auto object-contain mx-auto"
+            priority
+          />
           <span className="px-2.5 py-0.5 rounded bg-[#161e2e] text-[#a3b18a] border border-[#222e40] font-mono text-[11px] uppercase font-semibold">
             SIH 2026 • PS 26044 Auth Portal
           </span>

@@ -27,38 +27,39 @@ function MatchingContent() {
   const [loading, setLoading] = useState<boolean>(false);
   const [matchResult, setMatchResult] = useState<any>(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    fetchInitialData();
-  }, []);
+    const fetchInitialData = async () => {
+      try {
+        const [probRes, courseRes] = await Promise.all([
+          fetch("/api/problems"),
+          fetch("/api/courses"),
+        ]);
 
-  const fetchInitialData = async () => {
-    try {
-      const [probRes, courseRes] = await Promise.all([
-        fetch("/api/problems"),
-        fetch("/api/courses"),
-      ]);
+        const probData = await probRes.json();
+        const courseData = await courseRes.json();
 
-      const probData = await probRes.json();
-      const courseData = await courseRes.json();
+        if (probData.success && probData.data.length > 0) {
+          setProblems(probData.data);
+          const targetProbId =
+            queryProblemId && probData.data.some((p: any) => p.id === queryProblemId)
+              ? queryProblemId
+              : probData.data[0].id;
+          setSelectedProblemId(targetProbId);
 
-      if (probData.success && probData.data.length > 0) {
-        setProblems(probData.data);
-        const targetProbId =
-          queryProblemId && probData.data.some((p: any) => p.id === queryProblemId)
-            ? queryProblemId
-            : probData.data[0].id;
-        setSelectedProblemId(targetProbId);
-
-        if (courseData.success && courseData.data.length > 0) {
-          setCourses(courseData.data);
-          setSelectedCourseId(courseData.data[0].id);
-          runMatching(targetProbId, courseData.data[0].id, studentSkills);
+          if (courseData.success && courseData.data.length > 0) {
+            setCourses(courseData.data);
+            setSelectedCourseId(courseData.data[0].id);
+            runMatching(targetProbId, courseData.data[0].id, studentSkills);
+          }
         }
+      } catch (err) {
+        console.error("Failed to load matching data:", err);
       }
-    } catch (err) {
-      console.error("Failed to load matching data:", err);
-    }
-  };
+    };
+    fetchInitialData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAddSkill = (e?: React.FormEvent) => {
     if (e) e.preventDefault();

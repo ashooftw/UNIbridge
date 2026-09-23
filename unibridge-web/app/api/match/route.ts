@@ -38,12 +38,15 @@ export async function POST(request: Request) {
     };
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
       const aiResponse = await fetch(`${aiServiceUrl}/api/match`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(5000),
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
 
       if (aiResponse.ok) {
         const aiData = await aiResponse.json();
