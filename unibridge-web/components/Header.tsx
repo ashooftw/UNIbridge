@@ -4,28 +4,16 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import {
-  Sun,
-  Moon,
-  Search,
-  ChevronDown,
-  GraduationCap,
-  School,
-  Briefcase,
-  Award,
-  PlusCircle,
-  LogIn,
-  Cpu,
-  Layers,
-  Sparkles,
-} from "lucide-react";
+import { Zap } from "lucide-react";
+import { AutomationDemoModal } from "./AutomationDemoModal";
 
 export function Header() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [currentRole, setCurrentRole] = useState("STUDENT");
+  const [userProfile, setUserProfile] = useState<any>(null);
   const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -36,15 +24,30 @@ export function Header() {
     if (savedRole) {
       setCurrentRole(savedRole);
     }
-  }, []);
+    const savedUser = localStorage.getItem("unibridge_user");
+    if (savedUser) {
+      try {
+        setUserProfile(JSON.parse(savedUser));
+      } catch (e) {
+        console.error("Failed to parse saved user", e);
+      }
+    }
+  }, [pathname]);
 
   const handleRoleChange = (newRole: string) => {
     setCurrentRole(newRole);
     localStorage.setItem("unibridge_user_role", newRole);
     setIsRoleDropdownOpen(false);
+
+    if (newRole === "FACULTY") {
+      router.push("/telemetry");
+    } else if (newRole === "INDUSTRY_PARTNER") {
+      router.push("/pipeline");
+    } else if (newRole === "STUDENT") {
+      router.push("/repository");
+    }
   };
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -55,205 +58,163 @@ export function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/repository?search=${encodeURIComponent(searchQuery.trim())}`);
-    } else {
-      router.push("/repository");
-    }
-  };
-
   const roles = [
-    {
-      id: "STUDENT",
-      title: "Student",
-      subtitle: "Skill Mapping, Internships & Portfolio",
-      icon: GraduationCap,
-      color: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20",
-    },
-    {
-      id: "FACULTY",
-      title: "Academician / Faculty",
-      subtitle: "Curriculum Telemetry & Syllabus Revision",
-      icon: School,
-      color: "text-teal-500 bg-teal-500/10 border-teal-500/20",
-    },
-    {
-      id: "INDUSTRY_PARTNER",
-      title: "Industry Lead",
-      subtitle: "Challenge Posting & Direct Placement Pipeline",
-      icon: Briefcase,
-      color: "text-amber-500 bg-amber-500/10 border-amber-500/20",
-    },
+    { id: "STUDENT", label: "Student", desc: "Skill Mapping & Internships" },
+    { id: "FACULTY", label: "Academician", desc: "Curriculum & Telemetry" },
+    { id: "INDUSTRY_PARTNER", label: "Industry Lead", desc: "Challenges & PPO Pipeline" },
   ];
 
-  const currentRoleObj = roles.find((r) => r.id === currentRole) || roles[0];
-  const CurrentRoleIcon = currentRoleObj.icon;
-
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-[#0F1117]/80 border-b border-slate-200/80 dark:border-[#262B35]/80 transition-colors duration-200 shadow-sm">
-      {/* Top Institutional Badge Banner */}
-      <div className="bg-slate-900 dark:bg-[#0F1117] text-white text-[11px] font-medium py-1 px-4 text-center flex items-center justify-center gap-2 border-b border-slate-800 dark:border-[#262B35]">
-        <span className="px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-[10px] tracking-wider uppercase">
-          SIH 2026 • PS 26044
-        </span>
-        <span className="truncate text-slate-300 font-semibold">
-          Ministry of Ayush & AIIA — Academia-Industry Collaboration Portal
-        </span>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        {/* Left-Aligned Clean Typographical Brand Mark "UniBridge" */}
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center group">
-            <span className="text-2xl font-black tracking-tight text-foreground group-hover:text-primary transition-colors">
-              Uni<span className="text-primary">Bridge</span>
-            </span>
-          </Link>
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f131c]/90 backdrop-blur-md border-b border-[#222e40] shadow-[0_4px_24px_rgba(0,0,0,0.5)]">
+        <div className="h-16 max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-3">
+          
+          {/* Brand Logo & Authority Tag */}
+          <div className="flex items-center gap-3 shrink-0">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#f59e0b] to-[#4edea3] text-slate-950 font-black text-sm flex items-center justify-center shadow-[0_0_12px_rgba(245,158,11,0.3)]">
+                UB
+              </div>
+              <span className="font-headline font-bold text-[18px] text-white tracking-tight">
+                Uni<span className="text-[#f59e0b]">Bridge</span>
+              </span>
+            </Link>
+            <div className="hidden xl:flex flex-col justify-center border-l border-[#222e40] pl-3">
+              <div className="flex items-center gap-1.5">
+                <span className="px-1.5 py-0.2 rounded bg-[#161e2e] text-[#a3b18a] border border-[#263346] font-mono text-[10px] uppercase tracking-wider">
+                  SIH 2026 • PS 26044
+                </span>
+              </div>
+              <span className="font-mono text-[11px] text-[#94a3b8] mt-0.5">
+                Ministry of Ayush & AIIA Collaboration
+              </span>
+            </div>
+          </div>
 
           {/* Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-5 text-xs font-semibold text-muted-fg">
+          <nav className="hidden lg:flex items-center gap-1 p-1 bg-[#121824] border border-[#222e40] rounded-xl">
             <Link
               href="/"
-              className={`hover:text-foreground transition-colors ${
-                pathname === "/" ? "text-primary font-bold" : ""
+              className={`px-3 py-1.5 font-body text-[13px] transition-all rounded-lg ${
+                pathname === "/"
+                  ? "bg-gradient-to-r from-[#1c2738] to-[#1e2f3d] text-white font-semibold shadow-sm border border-[#a3b18a]/50"
+                  : "text-[#94a3b8] hover:text-white hover:bg-[#1a2234]"
               }`}
             >
               Home
             </Link>
             <Link
               href="/repository"
-              className={`hover:text-foreground transition-colors ${
-                pathname === "/repository" ? "text-primary font-bold" : ""
+              className={`px-3 py-1.5 font-body text-[13px] transition-all rounded-lg ${
+                pathname === "/repository"
+                  ? "bg-gradient-to-r from-[#1c2738] to-[#1e2f3d] text-white font-semibold shadow-sm border border-[#f59e0b]/50"
+                  : "text-[#94a3b8] hover:text-white hover:bg-[#1a2234]"
               }`}
             >
               Problem Repository
             </Link>
             <Link
               href="/matching"
-              className={`hover:text-foreground transition-colors flex items-center gap-1.5 ${
-                pathname === "/matching" ? "text-primary font-bold" : ""
+              className={`px-3 py-1.5 font-body text-[13px] transition-all rounded-lg flex items-center gap-1.5 ${
+                pathname === "/matching"
+                  ? "bg-gradient-to-r from-[#1c2738] to-[#1e2f3d] text-white font-semibold shadow-sm border border-[#a3b18a]/50"
+                  : "text-[#94a3b8] hover:text-white hover:bg-[#1a2234]"
               }`}
             >
-              <Cpu className="w-3.5 h-3.5 text-primary" />
-              <span>AI Match Engine</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] shadow-[0_0_8px_#f59e0b]"></span>
+              <span>AI Matcher</span>
             </Link>
             <Link
               href="/telemetry"
-              className={`hover:text-foreground transition-colors flex items-center gap-1.5 ${
-                pathname === "/telemetry" ? "text-primary font-bold" : ""
+              className={`px-3 py-1.5 font-body text-[13px] transition-all rounded-lg ${
+                pathname === "/telemetry"
+                  ? "bg-gradient-to-r from-[#1c2738] to-[#1e2f3d] text-white font-semibold shadow-sm border border-[#a3b18a]/50"
+                  : "text-[#94a3b8] hover:text-white hover:bg-[#1a2234]"
               }`}
             >
-              <Layers className="w-3.5 h-3.5 text-purple-500" />
-              <span>Academic Telemetry</span>
+              BoS Telemetry
             </Link>
             <Link
               href="/pipeline"
-              className={`hover:text-foreground transition-colors flex items-center gap-1.5 ${
-                pathname === "/pipeline" ? "text-primary font-bold" : ""
+              className={`px-3 py-1.5 font-body text-[13px] transition-all rounded-lg ${
+                pathname === "/pipeline"
+                  ? "bg-gradient-to-r from-[#1c2738] to-[#1e2f3d] text-white font-semibold shadow-sm border border-[#588157]/50 relative"
+                  : "text-[#94a3b8] hover:text-white hover:bg-[#1a2234]"
               }`}
             >
-              <Award className="w-3.5 h-3.5 text-amber-500" />
-              <span>Placement Pipeline</span>
+              Placement Pipeline
             </Link>
           </nav>
-        </div>
 
-        {/* Right-Aligned Controls & Role Switcher */}
-        <div className="flex items-center gap-3">
-          {/* Functional Search Bar */}
-          <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center relative">
-            <Search className="w-3.5 h-3.5 absolute left-3 text-muted-fg pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search challenges, skills..."
-              className="pl-8 pr-3 py-1.5 text-xs rounded-xl bg-card text-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring w-48 lg:w-56 transition-all"
-            />
-          </form>
-
-          {/* Post Problem CTA */}
-          <Link
-            href="/problems/new"
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all"
-          >
-            <PlusCircle className="w-3.5 h-3.5" />
-            <span>Post Challenge</span>
-          </Link>
-
-          {/* Theme Toggle */}
-          {mounted && (
+          {/* Right Controls */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            {/* 1-Click Automated Walkthrough Button */}
             <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-xl bg-card border border-border text-foreground hover:bg-muted transition-colors flex items-center gap-1.5 text-xs font-medium"
-              title="Toggle Light / Dark Mode"
-              aria-label="Toggle Theme"
+              onClick={() => setIsDemoModalOpen(true)}
+              className="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 font-bold text-[12px] hover:brightness-110 transition-all flex items-center gap-1 shadow-[0_2px_10px_rgba(245,158,11,0.2)]"
+              title="Run 1-Click Automated PS 26044 Pipeline Walkthrough"
             >
-              {theme === "dark" ? (
-                <Sun className="w-4 h-4 text-amber-500" />
-              ) : (
-                <Moon className="w-4 h-4 text-teal-600" />
-              )}
-            </button>
-          )}
-
-          {/* Role Switcher Dropdown */}
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setIsRoleDropdownOpen(!isRoleDropdownOpen)}
-              className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-card border border-border text-foreground hover:border-primary/40 transition-all flex items-center gap-2 shadow-sm"
-            >
-              <CurrentRoleIcon className="w-3.5 h-3.5 text-primary" />
-              <span className="hidden sm:inline font-bold">{currentRoleObj.title}</span>
-              <ChevronDown className="w-3 h-3 text-muted-fg" />
+              <Zap className="w-3.5 h-3.5 fill-slate-950" />
+              <span className="hidden sm:inline">⚡ Run Automated PS 26044</span>
+              <span className="sm:hidden">⚡ Demo</span>
             </button>
 
-            {isRoleDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-card border border-border shadow-2xl p-2 z-50 space-y-1 backdrop-blur-xl">
-                <div className="px-3 py-2 text-[11px] font-bold text-muted-fg uppercase tracking-wider border-b border-border">
-                  Switch Portal Role
-                </div>
-                {roles.map((r) => {
-                  const IconComp = r.icon;
-                  const isSelected = currentRole === r.id;
-                  return (
-                    <button
-                      key={r.id}
-                      onClick={() => handleRoleChange(r.id)}
-                      className={`w-full text-left p-2.5 rounded-xl text-xs font-medium flex items-start gap-2.5 transition-all ${
-                        isSelected
-                          ? "bg-primary/15 border border-primary/30 text-primary font-bold shadow-sm"
-                          : "hover:bg-muted text-foreground border border-transparent"
-                      }`}
-                    >
-                      <IconComp className={`w-4 h-4 mt-0.5 shrink-0 ${r.color.split(" ")[0]}`} />
-                      <div>
-                        <div className="font-bold text-xs">{r.title}</div>
-                        <div className="text-[10px] text-muted-fg font-normal leading-tight">
-                          {r.subtitle}
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
+            {/* Role Switcher Pill Bar */}
+            <div className="hidden sm:inline-flex items-center p-0.5 rounded-lg bg-[#121824] border border-[#222e40] font-mono text-[11px]">
+              {roles.map((r) => (
+                <button
+                  key={r.id}
+                  onClick={() => handleRoleChange(r.id)}
+                  className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
+                    currentRole === r.id
+                      ? "bg-[#1a2538] text-[#ffc174] border border-amber-500/20 shadow-xs"
+                      : "text-[#94a3b8] hover:text-white hover:bg-[#1a2234]"
+                  }`}
+                  type="button"
+                >
+                  {r.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Theme Toggle */}
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                aria-label="Toggle visual theme"
+                className="p-1.5 rounded-lg bg-[#121824] border border-[#222e40] text-[#94a3b8] hover:text-amber-400 hover:bg-[#1a2234] transition-colors flex items-center justify-center"
+                type="button"
+              >
+                <span className="material-symbols-outlined text-[18px]">
+                  {theme === "dark" ? "dark_mode" : "light_mode"}
+                </span>
+              </button>
+            )}
+
+            {/* Login / Profile CTA */}
+            {userProfile ? (
+              <div className="w-8 h-8 rounded-full bg-[#162132] border border-[#a3b18a]/40 flex items-center justify-center shrink-0 text-[#a3b18a] font-bold text-xs">
+                {userProfile.name ? userProfile.name.substring(0, 2).toUpperCase() : "US"}
               </div>
+            ) : (
+              <Link
+                href="/login"
+                className="btn-hover-lift inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-semibold text-[13px] transition-all border border-amber-400/40 shadow-[0_2px_12px_rgba(245,158,11,0.25)]"
+              >
+                <span className="material-symbols-outlined text-[16px]">verified_user</span>
+                <span>Portal Login</span>
+              </Link>
             )}
           </div>
-
-          {/* Login Link */}
-          <Link
-            href="/login"
-            className="p-2 sm:px-3 sm:py-1.5 rounded-xl text-xs font-semibold bg-primary text-primary-fg hover:opacity-90 transition-all flex items-center gap-1.5 shadow-sm"
-          >
-            <LogIn className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Portal Login</span>
-          </Link>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Render Automation Demo Modal */}
+      <AutomationDemoModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+      />
+    </>
   );
 }
 

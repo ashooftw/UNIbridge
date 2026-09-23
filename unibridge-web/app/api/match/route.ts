@@ -19,7 +19,12 @@ export async function POST(request: Request) {
     }
 
     const problemSkills = problem.requiredSkills.split(',').map((s) => s.trim());
-    const learningOutcomes = course.learningOutcomes.split(';').map((o) => o.trim()).filter(Boolean);
+    // Split on semicolons if present, otherwise fall back to period-space boundaries.
+    // The DB field stores free-text prose, so we try multiple delimiters.
+    const rawOutcomes = course.learningOutcomes;
+    const learningOutcomes = rawOutcomes.includes(';')
+      ? rawOutcomes.split(';').map((o) => o.trim()).filter(Boolean)
+      : rawOutcomes.split(/\. /).map((o) => o.trim()).filter(Boolean);
 
     const aiServiceUrl = process.env.NEXT_PUBLIC_AI_SERVICE_URL || 'http://127.0.0.1:8000';
 
@@ -37,6 +42,7 @@ export async function POST(request: Request) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(5000),
       });
 
       if (aiResponse.ok) {
@@ -53,9 +59,11 @@ export async function POST(request: Request) {
           matched_outcomes: aiData.matched_outcomes,
           engine: 'Python FastAPI (sentence-transformers/all-MiniLM-L6-v2)',
         });
+      } else {
+        console.warn(`AI Service returned non-OK status ${aiResponse.status}, falling back to server calculation.`);
       }
     } catch (err) {
-      console.warn('AI Service unreachable, using server calculation fallback:', err);
+      console.warn('AI Service unreachable or timed out, using server calculation fallback:', err);
     }
 
     // Fallback alignment calculation if FastAPI server is starting up

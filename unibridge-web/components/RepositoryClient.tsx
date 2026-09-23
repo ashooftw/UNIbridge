@@ -2,20 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import {
-  Building2,
-  Cpu,
-  Calendar,
-  Tag,
-  CheckCircle2,
-  HeartPulse,
-  PlusCircle,
-  Search,
-  X,
-  ArrowRight,
-  Filter,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, PlusCircle, Search, X } from "lucide-react";
 
 interface Problem {
   id: string;
@@ -35,38 +22,12 @@ interface RepositoryClientProps {
   initialSearchQuery?: string;
 }
 
-const CATEGORIES = [
-  "All Challenges",
-  "Computer Vision & AI",
-  "IoT & Embedded",
-  "Health Informatics",
-  "Supply Chain",
-] as const;
-
-type Category = (typeof CATEGORIES)[number];
-
-function getProblemCategory(problem: Problem): Category {
-  const text = `${problem.title} ${problem.description} ${problem.requiredSkills} ${problem.companyName}`.toLowerCase();
-
-  if (text.includes("vision") || text.includes("image") || text.includes("ai") || text.includes("pytorch") || text.includes("botanical") || text.includes("detection")) {
-    return "Computer Vision & AI";
-  }
-  if (text.includes("iot") || text.includes("sensor") || text.includes("embedded") || text.includes("mqtt") || text.includes("telemetry") || text.includes("fermentation")) {
-    return "IoT & Embedded";
-  }
-  if (text.includes("fhir") || text.includes("abdm") || text.includes("clinical") || text.includes("health") || text.includes("informatics") || text.includes("ehr")) {
-    return "Health Informatics";
-  }
-  if (text.includes("supply") || text.includes("chain") || text.includes("traceability") || text.includes("logistics") || text.includes("herb")) {
-    return "Supply Chain";
-  }
-
-  return "Computer Vision & AI";
-}
+const DIFFICULTY_OPTIONS = ["ALL", "BEGINNER", "INTERMEDIATE", "ADVANCED"] as const;
 
 export function RepositoryClient({ initialProblems, initialSearchQuery = "" }: RepositoryClientProps) {
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
-  const [activeCategory, setActiveCategory] = useState<Category>("All Challenges");
+  const [activeDifficulty, setActiveDifficulty] = useState<string>("ALL");
+  const [selectedTechStack, setSelectedTechStack] = useState<string | null>(null);
 
   useEffect(() => {
     setSearchQuery(initialSearchQuery);
@@ -74,13 +35,17 @@ export function RepositoryClient({ initialProblems, initialSearchQuery = "" }: R
 
   const filteredProblems = useMemo(() => {
     return initialProblems.filter((p) => {
-      // Category filter
-      if (activeCategory !== "All Challenges") {
-        const cat = getProblemCategory(p);
-        if (cat !== activeCategory) return false;
+      // Difficulty Filter
+      if (activeDifficulty !== "ALL" && p.difficulty.toUpperCase() !== activeDifficulty) {
+        return false;
       }
 
-      // Search query filter
+      // Tech Stack Filter
+      if (selectedTechStack && !p.requiredSkills.toLowerCase().includes(selectedTechStack.toLowerCase())) {
+        return false;
+      }
+
+      // Text Search Query Filter
       if (!searchQuery.trim()) return true;
       const q = searchQuery.toLowerCase().trim();
       return (
@@ -91,187 +56,232 @@ export function RepositoryClient({ initialProblems, initialSearchQuery = "" }: R
         p.targetAudience.toLowerCase().includes(q)
       );
     });
-  }, [initialProblems, activeCategory, searchQuery]);
+  }, [initialProblems, activeDifficulty, selectedTechStack, searchQuery]);
 
   return (
-    <div className="space-y-8">
-      {/* Header & Post CTA */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs font-bold text-primary uppercase tracking-widest">
-            <HeartPulse className="w-4 h-4 text-primary" />
-            Ministry of Ayush & AIIA Industry Repository (PS 26044)
+    <div className="space-y-8 bg-[#0b0f17] text-[#dfe2ee] pb-16">
+      
+      {/* 1. Authority Header & Metadata Strip */}
+      <div className="flex flex-col gap-6 border-b border-[#222e40] pb-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-2">
+          <div className="flex items-center gap-2 font-mono text-[11px] text-[#94a3b8]">
+            <span className="px-2 py-0.5 rounded bg-[#161e2e] text-[#a3b18a] border border-[#588157]/40 font-semibold tracking-wider">
+              UGC / NCrF FRAMEWORK
+            </span>
+            <span>/</span>
+            <span className="text-white">AYUSH-INDUSTRY SYNERGY REPOSITORY</span>
+            <span>/</span>
+            <span className="text-[#f59e0b] font-mono">SIH 2026 : PS 26044</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
-            Operational Ayush & R&D Challenges
-          </h1>
-          <p className="text-sm text-muted-fg max-w-3xl leading-relaxed">
-            Real-world operational bottlenecks from Ministry of Ayush labs, AIIA research centers, and corporate Ayush R&D partners. Match your profile directly against open challenges.
-          </p>
+
+          <div className="flex items-center gap-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#121824] border border-[#222e40] font-mono text-[11px] text-slate-200">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]"></span>
+              </span>
+              <span>{initialProblems.length} VERIFIED BOTTLENECKS LIVE</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#588157]/15 border border-[#588157]/40 font-mono text-[11px] text-[#a3b18a]">
+              <span className="material-symbols-outlined text-[14px]">verified</span>
+              <span>100% NEP 4.0 CR AUDITED</span>
+            </div>
+          </div>
         </div>
 
-        <Link
-          href="/problems/new"
-          className="px-4 py-2.5 rounded-xl font-bold text-xs bg-primary text-primary-fg hover:opacity-90 transition-all flex items-center gap-2 self-start sm:self-auto shadow-md hover:shadow-lg shrink-0"
-        >
-          <PlusCircle className="w-4 h-4" />
-          <span>Post New Challenge</span>
-        </Link>
+        {/* Master Title & Action Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
+          <div className="lg:col-span-8 space-y-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="px-2.5 py-0.5 rounded bg-[#f59e0b]/15 border border-[#f59e0b]/40 text-[#f59e0b] font-mono text-[11px] font-semibold">
+                Engineering Cohort Intake 2026
+              </span>
+              <span className="px-2.5 py-0.5 rounded bg-[#161e2e] border border-[#222e40] text-[#94a3b8] font-mono text-[11px]">
+                Tier-1 MSME & Ayush Clusters
+              </span>
+            </div>
+            <h1 className="font-headline text-[32px] sm:text-[36px] font-bold text-white tracking-tight">
+              Industry Problem Repository
+            </h1>
+            <p className="font-body text-sm text-[#94a3b8] max-w-3xl leading-relaxed">
+              Curated MSME, Ayush, and Enterprise Engineering Bottlenecks mapped directly to UGC learning outcomes and National Credit Framework standards.
+            </p>
+          </div>
+
+          <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-stretch lg:items-end gap-2.5">
+            <Link
+              href="/problems/new"
+              className="btn-hover-lift inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[#1c2638] hover:bg-[#151d2c] text-white hover:text-[#f59e0b] border border-[#222e40] hover:border-[#f59e0b]/50 font-bold text-[13px] transition-all shadow-md group"
+            >
+              <PlusCircle className="w-4 h-4 text-[#f59e0b] group-hover:scale-110 transition-transform" />
+              <span>Submit Industry Challenge (+)</span>
+            </Link>
+            <div className="flex items-center gap-2 font-mono text-[11px] text-[#94a3b8] px-1">
+              <span className="material-symbols-outlined text-[14px] text-[#a3b18a]">policy</span>
+              <span>MoU Pre-Approved • Direct IPR Sharing</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Real-time Filter & Search Bar */}
-      <div className="p-4 sm:p-6 rounded-2xl bg-card border border-border shadow-sm space-y-4">
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-          
-          {/* Search Input Pill */}
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-fg pointer-events-none" />
+      {/* 2. Real-Time Search & Filter Workbench */}
+      <div className="p-4 sm:p-5 rounded-xl bg-[#151d2c] border border-[#222e40] shadow-lg space-y-4">
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          {/* Search Input */}
+          <div className="relative flex-1 w-full">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-[#94a3b8]">
+              <Search className="w-4 h-4" />
+            </span>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Real-time search challenges, skills, sponsors..."
-              className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-background border border-border text-foreground text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+              placeholder="Search challenges by sponsor, keyword, or tech stack (e.g. OpenCV, PyTorch, IoT, ESP32, MQTT)..."
+              className="w-full h-11 pl-10 pr-10 rounded-lg bg-[#0b0f17] border border-[#222e40] text-white placeholder:text-[#64748b] font-body text-xs focus:outline-none focus:border-[#f59e0b] transition-colors"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full text-muted-fg hover:text-foreground transition-colors"
-                title="Clear Search"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#94a3b8] hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
             )}
           </div>
 
-          {/* Active Challenge Count Counter */}
-          <div className="flex items-center gap-2 text-xs font-bold text-muted-fg shrink-0 px-3 py-2 rounded-xl bg-muted/40 border border-border/60">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>
-              Showing <strong className="text-foreground">{filteredProblems.length}</strong> of{" "}
-              <strong className="text-foreground">{initialProblems.length}</strong> challenges
-            </span>
-          </div>
-
-        </div>
-
-        {/* Quick Category Filter Tabs */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/60">
-          <span className="text-xs font-bold text-muted-fg uppercase tracking-wider flex items-center gap-1.5 mr-2">
-            <Filter className="w-3.5 h-3.5 text-primary" />
-            Category:
-          </span>
-          {CATEGORIES.map((cat) => {
-            const isActive = activeCategory === cat;
-            return (
+          {/* Difficulty Filter Pills */}
+          <div className="flex items-center gap-1 bg-[#0b0f17] p-1 rounded-lg border border-[#222e40] font-mono text-[11px] shrink-0">
+            {DIFFICULTY_OPTIONS.map((diff) => (
               <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                  isActive
-                    ? "bg-primary text-primary-fg shadow-sm font-bold"
-                    : "bg-muted/50 text-muted-fg hover:text-foreground hover:bg-muted border border-border/50"
+                key={diff}
+                onClick={() => setActiveDifficulty(diff)}
+                className={`px-3 py-1.5 rounded-md font-semibold transition-all ${
+                  activeDifficulty === diff
+                    ? "bg-[#1c2638] text-[#ffc174] border border-[#f59e0b]/40 shadow-sm"
+                    : "text-[#94a3b8] hover:text-white"
                 }`}
               >
-                {cat}
+                {diff}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Tech Stack Chip Filter Row */}
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#222e40]/70 font-mono text-[11px]">
+          <span className="text-[#94a3b8] font-semibold flex items-center gap-1 mr-1">
+            <span className="material-symbols-outlined text-[14px] text-[#f59e0b]">filter_alt</span>
+            Filter Tech Stack:
+          </span>
+          {["PyTorch", "OpenCV", "IoT", "TensorRT", "MQTT", "Blockchain", "Python", "Rust"].map((tech) => {
+            const isSelected = selectedTechStack === tech;
+            return (
+              <button
+                key={tech}
+                onClick={() => setSelectedTechStack(isSelected ? null : tech)}
+                className={`px-2.5 py-1 rounded-md transition-all ${
+                  isSelected
+                    ? "bg-[#f59e0b] text-slate-950 font-bold border border-[#f59e0b]"
+                    : "bg-[#0b0f17] text-[#a3b18a] hover:text-white border border-[#222e40]"
+                }`}
+              >
+                {tech}
               </button>
             );
           })}
+          {(selectedTechStack || searchQuery || activeDifficulty !== "ALL") && (
+            <button
+              onClick={() => {
+                setSearchQuery("");
+                setActiveDifficulty("ALL");
+                setSelectedTechStack(null);
+              }}
+              className="ml-auto text-[#f59e0b] hover:underline font-semibold text-[11px]"
+            >
+              Reset Filters
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Challenge Grid */}
+      {/* 3. Challenge Cards Grid */}
       {filteredProblems.length === 0 ? (
-        <div className="p-12 text-center rounded-2xl bg-card border border-border space-y-3">
-          <Search className="w-8 h-8 text-muted-fg mx-auto" />
-          <div className="text-base font-bold text-foreground">No matching challenges found</div>
-          <p className="text-xs text-muted-fg max-w-sm mx-auto">
-            Try adjusting your search terms or category selection to discover open Ayush problem statements.
+        <div className="p-12 text-center rounded-xl bg-[#151d2c] border border-[#222e40] space-y-3">
+          <Search className="w-8 h-8 text-[#94a3b8] mx-auto" />
+          <div className="text-base font-bold text-white">No matching challenges found</div>
+          <p className="text-xs text-[#94a3b8] max-w-sm mx-auto">
+            Try resetting your search query or selecting a different technology stack filter.
           </p>
-          <button
-            onClick={() => {
-              setSearchQuery("");
-              setActiveCategory("All Challenges");
-            }}
-            className="inline-block px-4 py-2 rounded-xl text-xs font-bold bg-primary text-primary-fg hover:opacity-90 transition-all"
-          >
-            Reset Filters
-          </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredProblems.map((problem) => {
             const skillsList = problem.requiredSkills.split(",").map((s) => s.trim());
 
-            // Difficulty color coding per requirement: Green for Beginner, Amber for Intermediate, Rose for Advanced
             const difficultyBadge =
-              problem.difficulty === "BEGINNER"
-                ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/25"
-                : problem.difficulty === "ADVANCED"
-                ? "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/25"
-                : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/25";
-
-            const categoryTag = getProblemCategory(problem);
+              problem.difficulty.toUpperCase() === "BEGINNER"
+                ? "bg-[#10b981]/15 text-[#10b981] border-[#10b981]/30"
+                : problem.difficulty.toUpperCase() === "ADVANCED"
+                ? "bg-[#ffb4ab]/15 text-[#ffb4ab] border-[#ffb4ab]/30"
+                : "bg-[#f59e0b]/15 text-[#f59e0b] border-[#f59e0b]/30";
 
             return (
               <div
                 key={problem.id}
-                className="p-6 rounded-2xl bg-card border border-border shadow-sm flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/50 space-y-4"
+                className="p-6 rounded-xl bg-[#151d2c] border border-[#222e40] hover:border-[#f59e0b]/40 transition-all flex flex-col justify-between space-y-5 shadow-lg group hover:-translate-y-0.5"
               >
-                <div className="space-y-3.5">
-                  {/* Metadata Chips Row 1 */}
-                  <div className="flex items-center justify-between gap-2 text-xs">
-                    <div className="flex items-center gap-2 font-bold text-primary truncate">
-                      <Building2 className="w-4 h-4 shrink-0" />
+                <div className="space-y-4">
+                  {/* Top Sponsor & Difficulty Row */}
+                  <div className="flex items-center justify-between gap-2 font-mono text-[11px]">
+                    <div className="flex items-center gap-2 text-[#ffc174] font-bold truncate">
+                      <span className="material-symbols-outlined text-[16px]">domain</span>
                       <span className="truncate">{problem.companyName}</span>
                     </div>
-                    {/* Difficulty Pill */}
-                    <span
-                      className={`px-3 py-1 rounded-full text-[11px] font-extrabold border shrink-0 ${difficultyBadge}`}
-                    >
+                    <span className={`px-2.5 py-0.5 rounded border font-bold ${difficultyBadge}`}>
                       {problem.difficulty}
                     </span>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg font-bold text-foreground leading-snug">
+                  <h3 className="font-headline font-bold text-lg text-white group-hover:text-[#ffc174] transition-colors leading-snug">
                     {problem.title}
                   </h3>
 
-                  {/* Pills Row: Target Audience & Category */}
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-md bg-muted text-[11px] font-semibold text-muted-fg border border-border/60">
+                  {/* Target Audience Pill */}
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded bg-[#111827] text-[#a3b18a] border border-[#222e40] font-mono text-[11px]">
                       Target: {problem.targetAudience}
                     </span>
-                    <span className="px-2.5 py-0.5 rounded-md bg-teal-500/10 text-[11px] font-semibold text-teal-600 dark:text-teal-400 border border-teal-500/20">
-                      {categoryTag}
+                    <span className="px-2.5 py-0.5 rounded bg-[#111827] text-[#94a3b8] border border-[#222e40] font-mono text-[11px]">
+                      {problem.timelineWeeks}w Sprint
                     </span>
                   </div>
 
                   {/* Description */}
-                  <p className="text-xs text-muted-fg leading-relaxed line-clamp-3">
+                  <p className="font-body text-xs text-[#94a3b8] leading-relaxed line-clamp-3">
                     {problem.description}
                   </p>
 
-                  {/* Deliverables */}
-                  <div className="p-3.5 rounded-xl bg-muted/30 border border-border/60 space-y-1">
-                    <div className="text-[11px] font-bold text-foreground">Target Deliverables:</div>
-                    <div className="text-xs text-muted-fg leading-relaxed line-clamp-2">
+                  {/* Deliverables Box */}
+                  <div className="p-3 rounded-lg bg-[#0b0f17] border border-[#222e40] space-y-1">
+                    <div className="font-mono text-[10px] font-bold uppercase text-[#a3b18a]">
+                      Target Deliverables:
+                    </div>
+                    <div className="font-body text-xs text-[#dfe2ee] leading-relaxed line-clamp-2">
                       {problem.targetDeliverables}
                     </div>
                   </div>
 
-                  {/* Skills tags */}
-                  <div className="space-y-1.5 pt-1">
-                    <div className="text-[11px] font-bold text-muted-fg uppercase tracking-wider flex items-center gap-1">
-                      <Tag className="w-3 h-3 text-primary" />
-                      Required Competencies:
+                  {/* Required Competencies */}
+                  <div className="space-y-1.5">
+                    <div className="font-mono text-[10px] uppercase text-[#94a3b8] font-bold">
+                      Required Tech Competencies:
                     </div>
                     <div className="flex flex-wrap gap-1.5">
                       {skillsList.map((skill, idx) => (
                         <span
                           key={idx}
-                          className="px-2.5 py-1 rounded-lg bg-primary/10 text-primary border border-primary/20 text-[11px] font-semibold"
+                          className="px-2 py-0.5 rounded bg-[#1c2638] text-[#ffc174] border border-[#f59e0b]/20 font-mono text-[11px]"
                         >
                           {skill}
                         </span>
@@ -281,26 +291,16 @@ export function RepositoryClient({ initialProblems, initialSearchQuery = "" }: R
                 </div>
 
                 {/* Card Footer */}
-                <div className="pt-4 border-t border-border/70 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-3 text-muted-fg">
-                    <span className="flex items-center gap-1 font-semibold">
-                      <Calendar className="w-3.5 h-3.5 text-amber-500" />
-                      {problem.timelineWeeks}w Sprint
-                    </span>
-                    {problem.mentorshipAvailable && (
-                      <span className="hidden sm:flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-semibold">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        AIIA Mentorship
-                      </span>
-                    )}
+                <div className="pt-4 border-t border-[#222e40] flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#a3b18a]">
+                    <span className="material-symbols-outlined text-[14px] text-[#10b981]">verified</span>
+                    <span>AIIA Mentored</span>
                   </div>
 
-                  {/* Direct Action: Prominent Match with Profile button */}
                   <Link
                     href={`/matching?problemId=${problem.id}`}
-                    className="px-4 py-2 rounded-xl bg-primary text-primary-fg hover:opacity-90 font-bold transition-all flex items-center gap-1.5 shadow-sm hover:shadow"
+                    className="btn-hover-lift inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 font-bold text-xs shadow-md"
                   >
-                    <Cpu className="w-3.5 h-3.5" />
                     <span>Match with Profile</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
@@ -313,3 +313,4 @@ export function RepositoryClient({ initialProblems, initialSearchQuery = "" }: R
     </div>
   );
 }
+

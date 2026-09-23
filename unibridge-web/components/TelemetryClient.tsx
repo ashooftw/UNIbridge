@@ -1,21 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  BarChart3,
-  AlertTriangle,
-  BookOpen,
-  Layers,
-  ArrowUpRight,
-  ShieldCheck,
-  Download,
-  CheckCircle2,
-  Cpu,
-  FileSpreadsheet,
-  Check,
-  X,
-  Share2,
-} from "lucide-react";
+import { Download, FileSpreadsheet, CheckCircle2, X } from "lucide-react";
+import { SkillTelemetryChart } from "./SkillTelemetryChart";
 
 interface TelemetryRecord {
   id: string;
@@ -36,18 +23,15 @@ interface TelemetryClientProps {
 export function TelemetryClient({ telemetryRecords }: TelemetryClientProps) {
   const [exportedItem, setExportedItem] = useState<TelemetryRecord | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [activeDeptTab, setActiveDeptTab] = useState<string>("ALL");
 
-  const totalCapstones = 142; // Institutional active capstone count
+  const totalCapstones = 142;
   const averageMatchScore = "78.4%";
   const totalDeficits = telemetryRecords.length;
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3000);
-  };
-
-  const handleExportSingle = (item: TelemetryRecord) => {
-    setExportedItem(item);
   };
 
   const handleGlobalExport = () => {
@@ -58,175 +42,166 @@ export function TelemetryClient({ telemetryRecords }: TelemetryClientProps) {
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
-    showToast("Full Board of Studies Syllabus Recommendation exported successfully.");
+    showToast("Full Board of Studies Syllabus Recommendation report exported successfully.");
   };
 
+  const filteredRecords = activeDeptTab === "ALL"
+    ? telemetryRecords
+    : telemetryRecords.filter((r) => r.department.toLowerCase().includes(activeDeptTab.toLowerCase()));
+
   return (
-    <div className="space-y-8">
-      {/* Toast Notification */}
+    <div className="space-y-8 bg-[#0b0f17] text-[#dfe2ee] pb-16">
+      
+      {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl bg-slate-900 text-white shadow-2xl text-xs font-bold flex items-center gap-2 border border-slate-700 animate-in fade-in slide-in-from-bottom-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+        <div className="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-lg bg-[#121927] text-white shadow-2xl font-mono text-xs font-bold flex items-center gap-2 border border-[#2b394f]">
+          <CheckCircle2 className="w-4 h-4 text-[#10b981]" />
           <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
+      {/* Header & Controls */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#2b394f] pb-6">
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest">
-            <BarChart3 className="w-4 h-4" />
-            Curriculum Telemetry Engine (PS 26044)
+          <div className="flex items-center gap-2 font-mono text-[11px] text-[#a3b18a]">
+            <span className="px-2 py-0.5 rounded bg-[#121927] border border-[#2b394f] text-[#ffc174] font-semibold">
+              SIH 2026 : PS 26044
+            </span>
+            <span>/</span>
+            <span>BOARD OF STUDIES TELEMETRY HUB</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
-            Academician Telemetry & Board of Studies Feed
+          <h1 className="font-headline text-[32px] sm:text-[36px] font-bold text-white tracking-tight">
+            Curriculum Telemetry & BoS Feed
           </h1>
-          <p className="text-sm text-muted-fg max-w-3xl leading-relaxed">
-            Automated evaluation telemetry fed directly to University Boards of Studies and Ayush Academic Councils. Identifies missing toolchains, outdated standards, and practical skill deficits across student capstone reviews.
+          <p className="font-body text-sm text-[#94a3b8] max-w-3xl leading-relaxed">
+            Automated evaluation telemetry fed directly to University Boards of Studies and Ayush Academic Councils. Pinpoints missing toolchains, outdated standards, and practical skill deficits.
           </p>
         </div>
 
         <button
           onClick={handleGlobalExport}
-          className="px-4 py-2.5 rounded-xl font-bold text-xs bg-primary text-primary-fg hover:opacity-90 transition-all flex items-center gap-2 self-start sm:self-auto shadow-md hover:shadow-lg shrink-0"
+          className="btn-hover-lift px-4 py-2.5 rounded-lg font-bold text-xs bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 flex items-center gap-2 self-start sm:self-auto shadow-md shrink-0"
         >
           <FileSpreadsheet className="w-4 h-4" />
-          <span>Export Full Telemetry Report</span>
+          <span>Export Full BoS Report</span>
         </button>
       </div>
 
-      {/* 3 Top Summary Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        {/* Card 1: Total Active Capstones */}
-        <div className="p-6 rounded-2xl bg-card border border-border shadow-sm space-y-3 card-hover relative overflow-hidden">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-muted-fg uppercase tracking-wider">
-              Total Active Capstones
-            </span>
-            <div className="p-2 rounded-xl bg-blue-500/10 text-blue-500">
-              <Cpu className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-black text-foreground">{totalCapstones}</div>
-          <p className="text-xs text-muted-fg font-medium">
-            Active capstone R&D projects across 12 Ayush & Eng departments
-          </p>
+      {/* 3 Metric Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 font-mono">
+        <div className="p-5 rounded-xl bg-[#121927] border border-[#2b394f] shadow-lg space-y-2">
+          <span className="text-[11px] text-[#a3b18a] uppercase tracking-wider font-semibold">Active Capstones</span>
+          <div className="text-3xl font-bold text-white">{totalCapstones}</div>
+          <p className="text-[11px] text-[#94a3b8]">Across 12 Ayush & Engineering Departments</p>
         </div>
 
-        {/* Card 2: Average Skill-Match Score */}
-        <div className="p-6 rounded-2xl bg-card border border-border shadow-sm space-y-3 card-hover relative overflow-hidden">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-muted-fg uppercase tracking-wider">
-              Average Skill-Match Score
-            </span>
-            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-500">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-black text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
-            <span>{averageMatchScore}</span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold border border-emerald-500/20">
-              +4.2% vs 2025
-            </span>
-          </div>
-          <p className="text-xs text-muted-fg font-medium">
-            Computed across 142 student capstone AI vector evaluations
-          </p>
+        <div className="p-5 rounded-xl bg-[#121927] border border-[#2b394f] shadow-lg space-y-2">
+          <span className="text-[11px] text-[#a3b18a] uppercase tracking-wider font-semibold">Average Match Score</span>
+          <div className="text-3xl font-bold text-[#4edea3]">{averageMatchScore}</div>
+          <p className="text-[11px] text-[#94a3b8]">Computed across 142 AI vector evaluations</p>
         </div>
 
-        {/* Card 3: Curriculum Deficits Identified */}
-        <div className="p-6 rounded-2xl bg-card border border-border shadow-sm space-y-3 card-hover relative overflow-hidden">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-muted-fg uppercase tracking-wider">
-              Curriculum Deficits Identified
-            </span>
-            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-500">
-              <AlertTriangle className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-3xl font-black text-amber-500 flex items-center gap-2">
-            <span>{totalDeficits} Flagged Items</span>
-          </div>
-          <p className="text-xs text-muted-fg font-medium">
-            Queued for Department Board of Studies syllabus review
-          </p>
+        <div className="p-5 rounded-xl bg-[#121927] border border-[#2b394f] shadow-lg space-y-2">
+          <span className="text-[11px] text-[#a3b18a] uppercase tracking-wider font-semibold">Flagged Curriculum Deficits</span>
+          <div className="text-3xl font-bold text-[#ffc174]">{totalDeficits} Deficits</div>
+          <p className="text-[11px] text-[#94a3b8]">Queued for annual Board of Studies revision</p>
         </div>
       </div>
 
+      {/* Embedded Radar Telemetry Chart Component */}
+      <SkillTelemetryChart
+        department={activeDeptTab === "ALL" ? "Computer Science & Ayush Informatics" : activeDeptTab}
+        onProposeRevision={handleGlobalExport}
+      />
+
       {/* Board of Studies Action Feed */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
-            <Layers className="w-5 h-5 text-purple-500" />
-            Board of Studies Action Feed & Syllabus Revision Stream
+      <div className="space-y-6 pt-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#2b394f] pb-3">
+          <h2 className="font-headline text-xl font-bold text-white">
+            Board of Studies Action Feed & Syllabus Revision Directives
           </h2>
+
+          {/* Department Filters */}
+          <div className="flex items-center gap-1 bg-[#121927] p-1 rounded-lg border border-[#2b394f] font-mono text-[11px]">
+            {["ALL", "Computer Science", "Ayush", "Electronics"].map((dept) => (
+              <button
+                key={dept}
+                onClick={() => setActiveDeptTab(dept)}
+                className={`px-2.5 py-1 rounded-md font-semibold transition-all ${
+                  activeDeptTab === dept
+                    ? "bg-[#1f2b3e] text-[#ffc174] border border-[#f59e0b]/30 shadow-sm"
+                    : "text-[#94a3b8] hover:text-white"
+                }`}
+              >
+                {dept}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="space-y-4">
-          {telemetryRecords.map((item) => {
+          {filteredRecords.map((item) => {
             const missingToolsList = item.missingTools.split(",").map((t) => t.trim());
             return (
               <div
                 key={item.id}
-                className="p-6 rounded-2xl bg-card border border-border shadow-sm space-y-4 hover:border-purple-500/40 transition-all card-hover"
+                className="p-5 rounded-xl bg-[#121927] border border-[#2b394f] shadow-lg space-y-4 hover:border-[#f59e0b]/40 transition-all"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/70 pb-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#2b394f] pb-3">
                   <div>
-                    <span className="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">
+                    <span className="font-mono text-[11px] font-bold text-[#ffc174] uppercase">
                       {item.department} • Academic Year {item.academicYear}
                     </span>
-                    <h3 className="text-base font-bold text-foreground mt-0.5">
+                    <h3 className="font-headline font-bold text-base text-white mt-0.5">
                       {item.skillDeficiency}
                     </h3>
                   </div>
 
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 self-start sm:self-auto shrink-0">
+                  <span className="px-3 py-1 rounded bg-[#ffb4ab]/15 text-[#ffb4ab] border border-[#ffb4ab]/30 font-mono text-[11px] font-bold self-start sm:self-auto">
                     Deficit Score: {item.aggregateDeficitScore}%
                   </span>
                 </div>
 
-                {/* Missing Tools & Deficit Toolchains */}
+                {/* Missing Toolchains */}
                 <div className="space-y-2">
-                  <div className="text-xs font-bold text-muted-fg uppercase tracking-wider flex items-center gap-1.5">
-                    <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+                  <div className="font-mono text-[10px] font-bold text-[#94a3b8] uppercase">
                     Identified Missing Toolchains & Industry Gap:
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {missingToolsList.map((tool, idx) => (
                       <span
                         key={idx}
-                        className="px-2.5 py-1 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 text-xs font-semibold"
+                        className="px-2.5 py-1 rounded bg-[#1f2b3e] text-[#ffb4ab] border border-[#ffb4ab]/30 font-mono text-[11px]"
                       >
-                        {tool}
+                        ⚠ {tool}
                       </span>
                     ))}
                   </div>
                 </div>
 
                 {/* Recommendation */}
-                <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/20 space-y-1.5">
-                  <div className="text-xs font-bold text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
-                    <BookOpen className="w-3.5 h-3.5" />
-                    Board of Studies Recommended Syllabus Revision:
+                <div className="p-3.5 rounded-lg bg-[#588157]/15 border border-[#588157]/40 space-y-1">
+                  <div className="font-mono text-[10px] font-bold text-[#a3b18a] uppercase">
+                    Board of Studies Recommended Syllabus Revision Directive:
                   </div>
-                  <p className="text-xs text-foreground font-medium leading-relaxed">
+                  <p className="font-body text-xs text-[#dfe2ee] leading-relaxed">
                     {item.curriculumRecommendation}
                   </p>
                 </div>
 
-                {/* Action Footer */}
-                <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-border/60">
-                  <div className="flex items-center gap-2 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>Ayush Digital Health Mission Telemetry Sync Active</span>
-                  </div>
+                {/* Footer */}
+                <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-[#2b394f]">
+                  <span className="font-mono text-[11px] text-[#4edea3] flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[14px]">verified_user</span>
+                    Ayush Digital Health Mission Telemetry Sync Active
+                  </span>
 
                   <button
-                    onClick={() => handleExportSingle(item)}
-                    className="px-4 py-2 rounded-xl text-xs font-bold bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all flex items-center gap-1.5 shadow-sm"
+                    onClick={() => setExportedItem(item)}
+                    className="btn-hover-lift px-3.5 py-1.5 rounded-lg bg-[#1f2b3e] hover:bg-[#2b394f] text-[#ffc174] font-mono text-xs font-bold border border-[#f59e0b]/30 flex items-center gap-1.5"
                   >
                     <Download className="w-3.5 h-3.5" />
-                    <span>Export Syllabus Recommendation</span>
+                    <span>Export Directive PDF</span>
                   </button>
                 </div>
               </div>
@@ -235,57 +210,50 @@ export function TelemetryClient({ telemetryRecords }: TelemetryClientProps) {
         </div>
       </div>
 
-      {/* Single Export Modal */}
+      {/* Export Directive Modal */}
       {exportedItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="w-full max-w-xl rounded-3xl bg-card border border-border shadow-2xl p-6 sm:p-8 space-y-6 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+          <div className="w-full max-w-xl rounded-xl bg-[#121927] border border-[#2b394f] shadow-2xl p-6 space-y-6 relative">
             <button
               onClick={() => setExportedItem(null)}
-              className="absolute top-6 right-6 p-2 rounded-full text-muted-fg hover:text-foreground hover:bg-muted transition-colors"
+              className="absolute top-5 right-5 p-1 text-[#94a3b8] hover:text-white"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <div className="flex items-center gap-3 border-b border-border pb-4">
-              <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center shrink-0 border border-purple-500/20">
-                <BookOpen className="w-5 h-5" />
-              </div>
-              <div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-purple-500 bg-purple-500/10 px-2 py-0.5 rounded-full">
-                  Official Syllabus Recommendation
-                </span>
-                <h3 className="text-lg font-bold text-foreground mt-0.5">
-                  {exportedItem.department} Academic Board Resolution
-                </h3>
-              </div>
+            <div className="space-y-1 border-b border-[#2b394f] pb-3">
+              <span className="font-mono text-[10px] uppercase font-bold text-[#f59e0b]">
+                Official Board of Studies Resolution Directive
+              </span>
+              <h3 className="font-headline font-bold text-lg text-white">
+                {exportedItem.department} Syllabus Update Directive
+              </h3>
             </div>
 
-            <div className="p-5 rounded-2xl bg-muted/40 border border-border space-y-3 text-xs">
+            <div className="p-4 rounded-lg bg-[#0b0f17] border border-[#2b394f] space-y-3 font-mono text-xs">
               <div>
-                <span className="font-bold text-muted-fg uppercase tracking-wider block text-[10px]">Identified Deficit:</span>
-                <span className="font-bold text-foreground text-sm">{exportedItem.skillDeficiency}</span>
+                <span className="text-[#94a3b8] block text-[10px] uppercase">Identified Skill Deficit:</span>
+                <span className="font-bold text-white text-sm">{exportedItem.skillDeficiency}</span>
               </div>
-
               <div>
-                <span className="font-bold text-muted-fg uppercase tracking-wider block text-[10px]">Missing Toolchains:</span>
-                <span className="font-semibold text-rose-500">{exportedItem.missingTools}</span>
+                <span className="text-[#94a3b8] block text-[10px] uppercase">Missing Toolchains:</span>
+                <span className="text-[#ffb4ab]">{exportedItem.missingTools}</span>
               </div>
-
               <div>
-                <span className="font-bold text-muted-fg uppercase tracking-wider block text-[10px]">Syllabus Revision Directive:</span>
-                <p className="text-foreground leading-relaxed font-medium bg-card p-3 rounded-xl border border-border mt-1">
+                <span className="text-[#94a3b8] block text-[10px] uppercase">Board Directive:</span>
+                <p className="font-body text-xs text-[#dfe2ee] leading-relaxed mt-1 p-3 rounded bg-[#161e2e] border border-[#2b394f]">
                   {exportedItem.curriculumRecommendation}
                 </p>
               </div>
             </div>
 
-            <div className="flex justify-end gap-3 border-t border-border pt-4">
+            <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => {
-                  showToast(`Exported syllabus recommendation for ${exportedItem.department}`);
+                  showToast(`Downloaded Syllabus Recommendation PDF for ${exportedItem.department}`);
                   setExportedItem(null);
                 }}
-                className="px-5 py-2.5 rounded-xl text-xs font-bold bg-primary text-primary-fg hover:opacity-90 transition-all flex items-center gap-1.5"
+                className="btn-hover-lift px-5 py-2.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 flex items-center gap-1.5 shadow-md"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Confirm & Download PDF</span>
@@ -297,3 +265,4 @@ export function TelemetryClient({ telemetryRecords }: TelemetryClientProps) {
     </div>
   );
 }
+

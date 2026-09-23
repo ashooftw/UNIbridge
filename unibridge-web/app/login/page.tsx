@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BookOpen, Layers, Cpu, Lock, Mail, CheckCircle2, AlertCircle, Sparkles, HeartPulse } from "lucide-react";
+import { CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,9 +15,9 @@ export default function LoginPage() {
   const [successMsg, setSuccessMsg] = useState("");
 
   const roles = [
-    { id: "STUDENT", label: "Student Learner", icon: BookOpen, color: "text-blue-500", demoEmail: "aarav.sharma@ayush.edu.in" },
-    { id: "FACULTY", label: "Academician / Faculty", icon: Layers, color: "text-teal-500", demoEmail: "dr.ramanujan@aiia.gov.in" },
-    { id: "INDUSTRY_PARTNER", label: "Industry / Ayush Partner", icon: Cpu, color: "text-amber-500", demoEmail: "rd.lead@dabur-ayush.com" },
+    { id: "STUDENT", label: "Student", demoEmail: "aarav.sharma@ayush.edu.in" },
+    { id: "FACULTY", label: "Academician", demoEmail: "dr.ramanujan@aiia.gov.in" },
+    { id: "INDUSTRY_PARTNER", label: "Industry Lead", demoEmail: "rd.lead@dabur-ayush.com" },
   ];
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -35,11 +35,20 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (data.success) {
-        setSuccessMsg(`Welcome back, ${data.user.name}! Authenticated for UniBridge...`);
+        localStorage.setItem("unibridge_user_role", role);
+        localStorage.setItem("unibridge_user", JSON.stringify(data.user));
+
+        setSuccessMsg(`Welcome back, ${data.user.name}! Authenticating...`);
         setTimeout(() => {
-          router.push("/");
+          if (role === "FACULTY") {
+            router.push("/telemetry");
+          } else if (role === "INDUSTRY_PARTNER") {
+            router.push("/pipeline");
+          } else {
+            router.push("/repository");
+          }
           router.refresh();
-        }, 1000);
+        }, 800);
       } else {
         setErrorMsg(data.error || "Login failed. Please check your credentials.");
       }
@@ -51,34 +60,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-[#0b0f17] text-[#dfe2ee]">
       <div className="w-full max-w-md space-y-6">
         
-        {/* Top Header */}
+        {/* Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold border border-primary/20">
-            <HeartPulse className="w-3.5 h-3.5" />
-            Ministry of Ayush & AIIA SIH 2026 PS 26044
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
-            Log in to Uni<span className="text-primary">Bridge</span>
+          <span className="px-2.5 py-0.5 rounded bg-[#161e2e] text-[#a3b18a] border border-[#222e40] font-mono text-[11px] uppercase font-semibold">
+            SIH 2026 • PS 26044 Auth Portal
+          </span>
+          <h1 className="font-headline text-3xl font-bold tracking-tight text-white">
+            Log in to Uni<span className="text-[#f59e0b]">Bridge</span>
           </h1>
-          <p className="text-xs text-muted-fg max-w-sm mx-auto">
+          <p className="font-body text-xs text-[#94a3b8] max-w-sm mx-auto">
             Access verified academic credentials, Ayush R&D project repositories, and AI match engine.
           </p>
         </div>
 
-        {/* Form Container Card */}
-        <div className="p-8 rounded-3xl bg-card border border-border shadow-xl space-y-6">
+        {/* Card */}
+        <div className="p-6 sm:p-8 rounded-xl bg-[#121824] border border-[#222e40] shadow-xl space-y-6">
           
-          {/* Role Selector Tabs */}
-          <div className="space-y-2">
-            <label className="block text-xs font-bold text-muted-fg uppercase tracking-wider">
-              Select Your Tri-Partite Role
+          {/* Role Selector */}
+          <div className="space-y-2 font-mono text-[11px]">
+            <label className="block text-[#94a3b8] uppercase tracking-wider font-bold">
+              Select Active Portal Role
             </label>
             <div className="grid grid-cols-3 gap-2">
               {roles.map((r) => {
-                const IconComp = r.icon;
                 const isSelected = role === r.id;
                 return (
                   <button
@@ -88,84 +95,72 @@ export default function LoginPage() {
                       setRole(r.id);
                       setEmail(r.demoEmail);
                     }}
-                    className={`p-2.5 rounded-xl border text-[11px] font-medium flex flex-col items-center justify-center gap-1 transition-all ${
+                    className={`py-2 px-1 rounded-md text-xs font-semibold transition-all ${
                       isSelected
-                        ? "bg-primary/15 border-primary text-primary font-bold shadow-sm"
-                        : "bg-background/50 border-border text-muted-fg hover:bg-muted"
+                        ? "bg-[#1a2538] text-[#ffc174] border border-[#f59e0b]/40 shadow-sm"
+                        : "bg-[#161e2e] text-[#94a3b8] border border-[#222e40] hover:text-white"
                     }`}
                   >
-                    <IconComp className={`w-4 h-4 ${r.color}`} />
-                    <span className="truncate w-full text-center">{r.label.split(" ")[0]}</span>
+                    {r.label}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Alert Messages */}
+          {/* Feedback Messages */}
           {errorMsg && (
-            <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs font-semibold flex items-center gap-2">
+            <div className="p-3 rounded-lg bg-[#ffb4ab]/15 border border-[#ffb4ab]/30 text-[#ffb4ab] text-xs font-mono flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
               <span>{errorMsg}</span>
             </div>
           )}
 
           {successMsg && (
-            <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 shrink-0 animate-bounce" />
+            <div className="p-3 rounded-lg bg-[#10b981]/15 border border-[#10b981]/30 text-[#4edea3] text-xs font-mono flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
               <span>{successMsg}</span>
             </div>
           )}
 
-          {/* Main Form */}
+          {/* Login Form */}
           <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-foreground mb-1">
-                Institutional / Corporate Email
-              </label>
-              <div className="relative">
-                <Mail className="w-4 h-4 absolute left-3.5 top-3 text-muted-fg" />
-                <input
-                  type="email"
-                  required
-                  placeholder="name@ayush.edu.in"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-background border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                />
-              </div>
+            <div className="space-y-1.5 font-mono text-xs">
+              <label className="block text-[#94a3b8]">Institutional Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full h-10 px-3.5 rounded-lg bg-[#161e2e] border border-[#222e40] text-white focus:outline-none focus:border-[#f59e0b]"
+              />
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-foreground mb-1">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3.5 top-3 text-muted-fg" />
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-background border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                />
-              </div>
+            <div className="space-y-1.5 font-mono text-xs">
+              <label className="block text-[#94a3b8]">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full h-10 px-3.5 rounded-lg bg-[#161e2e] border border-[#222e40] text-white focus:outline-none focus:border-[#f59e0b]"
+              />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-xl font-bold text-xs bg-primary text-primary-fg hover:opacity-90 transition-all shadow-md flex items-center justify-center gap-2"
+              className="btn-hover-lift w-full py-3 rounded-lg bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 font-bold text-xs shadow-md mt-2"
             >
-              <span>{loading ? "Authenticating..." : "Log In to UniBridge"}</span>
+              {loading ? "Authenticating..." : "Authenticate Portal Session"}
             </button>
           </form>
 
-          {/* Footer note */}
-          <div className="text-center text-xs text-muted-fg pt-2 border-t border-border">
-            Don&apos;t have an institutional account?{" "}
-            <Link href="/signup" className="text-primary font-bold hover:underline">
-              Register Here
+          {/* Footer Navigation */}
+          <div className="pt-2 text-center font-mono text-xs text-[#94a3b8]">
+            Don&apos;t have an account?{" "}
+            <Link href="/signup" className="text-[#ffc174] hover:underline font-bold">
+              Sign Up
             </Link>
           </div>
 
@@ -174,3 +169,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

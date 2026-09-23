@@ -2,169 +2,279 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronDown, Sparkles, Building2, Cpu, GraduationCap, CheckCircle2, ShieldCheck, Layers, Award, BarChart3, ArrowUpRight, HeartPulse } from "lucide-react";
+import { Zap, ArrowRight, Sparkles } from "lucide-react";
+import { AutomationDemoModal } from "@/components/AutomationDemoModal";
 
 export default function LandingPage() {
   const [openStudentBenefit, setOpenStudentBenefit] = useState<number | null>(0);
-  const [openDifferenceAccordion, setOpenDifferenceAccordion] = useState<boolean>(true);
+  const [isDemoOpen, setIsDemoOpen] = useState<boolean>(false);
   const [activeTabRole, setActiveTabRole] = useState<"STUDENT" | "FACULTY" | "INDUSTRY">("STUDENT");
 
   const studentBenefits = [
     {
-      title: "Real-World Operational Constraints in Ayush & Health Tech",
-      desc: "Work on authentic challenges like botanical herb adulteration detection, ABDM FHIR clinical data interoperability, and fermentation IoT telemetry rather than synthetic textbook assignments.",
+      title: "Real-World Engineering Challenges in Ayush & Industry",
+      desc: "Work on authentic bottlenecks like herb quality computer vision, ABDM FHIR interoperability, and fermentation IoT telemetry rather than synthetic textbook assignments.",
     },
     {
-      title: "Verifiable Digital Portfolios & Accredited Internship Placement",
-      desc: "Graduate with immutable, industry-endorsed cryptographic credentials showcasing code reviews, capstone credit validation, and direct Pre-Placement Offers (PPOs).",
+      title: "Verifiable Portfolios & Accredited Placement Pipeline",
+      desc: "Graduate with immutable, industry-endorsed credentials showcasing verified capstone code reviews, credit transfer, and direct Pre-Placement Offers (PPOs).",
     },
     {
-      title: "Curriculum-Aligned Credit Earning under NEP 2020",
-      desc: "Tackle real engineering problems across Ayush Informatics, Computer Vision, and Embedded IoT during semesters 3-7 to earn 3-4 degree credits.",
+      title: "Curriculum-Aligned Credit Earning under NEP 2020 & UGC NCrF",
+      desc: "Tackle real industry problems during semesters 3–8 to satisfy capstone requirements and claim 3–4 NEP degree credits.",
     },
     {
-      title: "Direct Mentorship from Ayush & Corporate R&D Leads",
-      desc: "Build direct technical relationships with senior scientists at AIIA, Dabur R&D, Baidyanath, and Ministry of Ayush Digital Health Mission.",
+      title: "Direct R&D Mentorship from Corporate Engineers",
+      desc: "Build direct technical connections with senior scientists at AIIA, Dabur R&D, Baidyanath, and Ministry of Ayush Digital Health Mission.",
     },
   ];
 
   return (
-    <div className="space-y-16 pb-20">
+    <div className="space-y-16 pb-20 bg-[#0b0f17] text-[#dfe2ee]">
       
       {/* 1. Hero Banner */}
-      <section className="relative pt-12 pb-16 border-b border-border bg-gradient-to-b from-background via-card/40 to-background overflow-hidden">
+      <section className="relative pt-10 pb-16 border-b border-[#222e40] bg-[#0b0f17] overflow-hidden">
         
         {/* Subtle Ambient Glow */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-32 left-1/4 w-[32rem] h-[32rem] rounded-full bg-emerald-950/20 blur-[120px] pointer-events-none"></div>
+        <div className="absolute -top-24 right-1/4 w-[30rem] h-[30rem] rounded-full bg-amber-500/10 blur-[130px] pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
           
-          <div className="flex flex-wrap items-center justify-center gap-2.5">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-primary/10 text-primary border border-primary/25">
-              <Sparkles className="w-3.5 h-3.5" />
-              SIH 2026 Problem Statement 26044
-            </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              <HeartPulse className="w-3.5 h-3.5" />
-              Ministry of Ayush & All India Institute of Ayurveda (AIIA)
+          <div className="flex items-center justify-center">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1 text-xs font-mono font-semibold rounded-full bg-[#161e2e] text-[#a3b18a] border border-[#222e40]">
+              <Sparkles className="w-3.5 h-3.5 text-[#f59e0b]" />
+              SIH 2026 Problem Statement 26044 • Ministry of Ayush & AIIA Platform
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-foreground max-w-4xl mx-auto">
-            Bridge Academia & Industry for{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-teal-500 to-amber-500">
-              Skill Mapping, Internships & Placements
+          <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white max-w-4xl mx-auto">
+            From Academic Knowledge to Industry R&D Solutions with{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffc174] via-[#f59e0b] to-[#4edea3]">
+              AI Curriculum Modernization
             </span>
           </h1>
 
-          <p className="text-sm sm:text-base text-muted-fg max-w-2xl mx-auto leading-relaxed">
-            UniBridge operationalizes NEP 2020 by connecting university course learning outcomes with real operational challenges from the Ministry of Ayush, AIIA, and Indian R&D partners.
+          <p className="font-body text-sm sm:text-base text-[#94a3b8] max-w-2xl mx-auto leading-relaxed">
+            UniBridge operationalizes NEP 2020 & UGC NCrF guidelines by linking university course outcomes directly with real-world enterprise & Ayush R&D bottlenecks through 384-dimensional sentence transformer embeddings.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <button
+              onClick={() => setIsDemoOpen(true)}
+              className="btn-hover-lift px-6 py-3 rounded-lg font-bold text-xs sm:text-sm bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 transition-all shadow-[0_2px_14px_rgba(245,158,11,0.3)] flex items-center gap-2"
+            >
+              <Zap className="w-4 h-4 fill-slate-950" />
+              <span>⚡ Run Automated PS 26044 Pipeline</span>
+            </button>
+
             <Link
               href="/repository"
-              className="px-6 py-3 rounded-xl font-semibold text-xs sm:text-sm bg-primary text-primary-fg hover:opacity-90 transition-all shadow-lg shadow-primary/20 flex items-center gap-2"
+              className="btn-hover-lift px-6 py-3 rounded-lg font-semibold text-xs sm:text-sm bg-[#161e2e] text-white border border-[#222e40] hover:border-[#f59e0b]/50 transition-all flex items-center gap-2 shadow-sm"
             >
-              <span>Explore Ayush & Industry Repository</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>Explore Problem Repository</span>
+              <ArrowRight className="w-4 h-4 text-[#f59e0b]" />
             </Link>
+            
             <Link
               href="/matching"
-              className="px-6 py-3 rounded-xl font-semibold text-xs sm:text-sm bg-card border border-border text-foreground hover:bg-muted transition-all flex items-center gap-2 shadow-sm"
+              className="btn-hover-lift px-5 py-3 rounded-lg font-semibold text-xs sm:text-sm bg-[#121824] border border-[#a3b18a]/40 text-[#a3b18a] hover:text-white transition-all flex items-center gap-2 shadow-sm"
             >
-              <Cpu className="w-4 h-4 text-primary" />
-              <span>Launch AI Match Engine</span>
+              <span className="w-2 h-2 rounded-full bg-[#f59e0b] shadow-[0_0_8px_#f59e0b]" />
+              <span>AI Match Engine</span>
             </Link>
-            <Link
-              href="/pipeline"
-              className="px-6 py-3 rounded-xl font-semibold text-xs sm:text-sm bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-all flex items-center gap-2"
-            >
-              <Award className="w-4 h-4" />
-              <span>Placement Pipeline</span>
-            </Link>
+          </div>
+
+          {/* Platform Telemetry Bar */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-8 border-t border-[#222e40]/80">
+            <div className="p-3 rounded-lg bg-[#121824] border border-[#222e40] text-center">
+              <div className="font-mono text-2xl font-bold text-white">24+</div>
+              <div className="font-mono text-[11px] text-[#94a3b8]">Verified MSME Challenges</div>
+            </div>
+            <div className="p-3 rounded-lg bg-[#121824] border border-[#222e40] text-center">
+              <div className="font-mono text-2xl font-bold text-[#4edea3]">100%</div>
+              <div className="font-mono text-[11px] text-[#94a3b8]">NEP 2020 & UGC Audited</div>
+            </div>
+            <div className="p-3 rounded-lg bg-[#121824] border border-[#222e40] text-center">
+              <div className="font-mono text-2xl font-bold text-[#ffc174]">384D</div>
+              <div className="font-mono text-[11px] text-[#94a3b8]">Vector Transformer Embeddings</div>
+            </div>
+            <div className="p-3 rounded-lg bg-[#121824] border border-[#222e40] text-center">
+              <div className="font-mono text-2xl font-bold text-[#a3b18a]">142</div>
+              <div className="font-mono text-[11px] text-[#94a3b8]">Active Capstone Fellowships</div>
+            </div>
           </div>
 
         </div>
       </section>
 
-      {/* 2. Tri-Partite Portal Role Architecture Section */}
+      {/* 2. Core 4-Pillar Platform Architecture */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-            Tri-Partite Portal Architecture (PS 26044)
+          <span className="px-2.5 py-0.5 rounded bg-[#161e2e] text-[#a3b18a] border border-[#222e40] font-mono text-[11px] uppercase tracking-wider">
+            Closed-Loop Platform Architecture
+          </span>
+          <h2 className="font-headline text-2xl sm:text-3xl font-bold tracking-tight text-white">
+            The 4 Operational Pillars of UniBridge
           </h2>
-          <p className="text-xs sm:text-sm text-muted-fg max-w-2xl mx-auto">
-            Tailored interfaces for Students, Academicians, and Industry Partners to close the university-industry skill gap.
+          <p className="font-body text-xs sm:text-sm text-[#94a3b8] max-w-2xl mx-auto">
+            Connecting industry challenges with course outcome modules and automated board-of-studies telemetry.
           </p>
         </div>
 
-        {/* Role Tab Switcher Buttons */}
-        <div className="flex justify-center border-b border-border max-w-md mx-auto p-1 bg-card rounded-2xl border">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Pillar 1 */}
+          <Link href="/repository" className="group p-6 rounded-xl bg-[#161e2e] border border-[#222e40] hover:border-[#f59e0b]/50 transition-all flex flex-col justify-between space-y-4 hover:-translate-y-1 shadow-md">
+            <div className="space-y-2">
+              <div className="w-10 h-10 rounded-lg bg-[#121824] border border-[#222e40] flex items-center justify-center text-[#f59e0b]">
+                <span className="material-symbols-outlined text-[20px]">dataset</span>
+              </div>
+              <h3 className="font-headline font-bold text-lg text-white group-hover:text-[#f59e0b] transition-colors">
+                1. Industry Problem Repository
+              </h3>
+              <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                Curated MSME, Ayush, and enterprise bottlenecks with dataset access flags, target deliverables, and required skill matrices.
+              </p>
+            </div>
+            <div className="font-mono text-[11px] text-[#f59e0b] flex items-center gap-1 font-semibold">
+              <span>Explore 24 Challenges</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </div>
+          </Link>
+
+          {/* Pillar 2 */}
+          <Link href="/matching" className="group p-6 rounded-xl bg-[#161e2e] border border-[#222e40] hover:border-[#a3b18a]/50 transition-all flex flex-col justify-between space-y-4 hover:-translate-y-1 shadow-md">
+            <div className="space-y-2">
+              <div className="w-10 h-10 rounded-lg bg-[#121824] border border-[#222e40] flex items-center justify-center text-[#4edea3]">
+                <span className="material-symbols-outlined text-[20px]">psychology</span>
+              </div>
+              <h3 className="font-headline font-bold text-lg text-white group-hover:text-[#4edea3] transition-colors">
+                2. AI Academic Matcher
+              </h3>
+              <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                PyTorch transformer vector engine calculating cosine alignment between problem statements and course outcomes.
+              </p>
+            </div>
+            <div className="font-mono text-[11px] text-[#4edea3] flex items-center gap-1 font-semibold">
+              <span>Launch Match Engine</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </div>
+          </Link>
+
+          {/* Pillar 3 */}
+          <Link href="/telemetry" className="group p-6 rounded-xl bg-[#161e2e] border border-[#222e40] hover:border-[#588157]/60 transition-all flex flex-col justify-between space-y-4 hover:-translate-y-1 shadow-md">
+            <div className="space-y-2">
+              <div className="w-10 h-10 rounded-lg bg-[#121824] border border-[#222e40] flex items-center justify-center text-[#a3b18a]">
+                <span className="material-symbols-outlined text-[20px]">radar</span>
+              </div>
+              <h3 className="font-headline font-bold text-lg text-white group-hover:text-[#a3b18a] transition-colors">
+                3. BoS Skill Telemetry
+              </h3>
+              <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                Empirical deficit analytics flagging syllabus gaps to University Boards of Studies for annual curriculum modernization.
+              </p>
+            </div>
+            <div className="font-mono text-[11px] text-[#a3b18a] flex items-center gap-1 font-semibold">
+              <span>View Radar Telemetry</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </div>
+          </Link>
+
+          {/* Pillar 4 */}
+          <Link href="/pipeline" className="group p-6 rounded-xl bg-[#161e2e] border border-[#222e40] hover:border-[#f59e0b]/50 transition-all flex flex-col justify-between space-y-4 hover:-translate-y-1 shadow-md">
+            <div className="space-y-2">
+              <div className="w-10 h-10 rounded-lg bg-[#121824] border border-[#222e40] flex items-center justify-center text-[#ffc174]">
+                <span className="material-symbols-outlined text-[20px]">verified</span>
+              </div>
+              <h3 className="font-headline font-bold text-lg text-white group-hover:text-[#ffc174] transition-colors">
+                4. Placement & Credit Pipeline
+              </h3>
+              <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                Capstone sprint tracking with dual corporate-faculty mentorship, PPO conversion, and Academic Bank of Credits (ABC) validation.
+              </p>
+            </div>
+            <div className="font-mono text-[11px] text-[#ffc174] flex items-center gap-1 font-semibold">
+              <span>Track PPO Pipeline</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* 3. Tri-Partite Portal Role Tabs Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="text-center space-y-2">
+          <h2 className="font-headline text-2xl sm:text-3xl font-bold tracking-tight text-white">
+            Tailored Experiences for Every Stakeholder
+          </h2>
+          <p className="font-body text-xs sm:text-sm text-[#94a3b8] max-w-2xl mx-auto">
+            Streamlined workflows designed specifically for Students, Faculty Advisors, and Corporate R&D Leads.
+          </p>
+        </div>
+
+        {/* Role Tab Switcher */}
+        <div className="flex justify-center border-b border-[#222e40] max-w-md mx-auto p-1 bg-[#121824] rounded-xl">
           <button
             onClick={() => setActiveTabRole("STUDENT")}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-2 rounded-lg text-xs font-bold font-mono transition-all ${
               activeTabRole === "STUDENT"
-                ? "bg-primary text-primary-fg shadow"
-                : "text-muted-fg hover:text-foreground"
+                ? "bg-[#1a2538] text-[#ffc174] border border-amber-500/30 shadow"
+                : "text-[#94a3b8] hover:text-white"
             }`}
           >
-            <GraduationCap className="w-4 h-4" />
-            <span>Student</span>
+            Student
           </button>
           <button
             onClick={() => setActiveTabRole("FACULTY")}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-2 rounded-lg text-xs font-bold font-mono transition-all ${
               activeTabRole === "FACULTY"
-                ? "bg-primary text-primary-fg shadow"
-                : "text-muted-fg hover:text-foreground"
+                ? "bg-[#1a2538] text-[#ffc174] border border-amber-500/30 shadow"
+                : "text-[#94a3b8] hover:text-white"
             }`}
           >
-            <Layers className="w-4 h-4" />
-            <span>Academician</span>
+            Academician
           </button>
           <button
             onClick={() => setActiveTabRole("INDUSTRY")}
-            className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-2 rounded-lg text-xs font-bold font-mono transition-all ${
               activeTabRole === "INDUSTRY"
-                ? "bg-primary text-primary-fg shadow"
-                : "text-muted-fg hover:text-foreground"
+                ? "bg-[#1a2538] text-[#ffc174] border border-amber-500/30 shadow"
+                : "text-[#94a3b8] hover:text-white"
             }`}
           >
-            <Building2 className="w-4 h-4" />
-            <span>Industry</span>
+            Industry Lead
           </button>
         </div>
 
-        {/* Role Detail Banner */}
-        <div className="p-8 rounded-3xl bg-card border border-border shadow-md space-y-6">
+        {/* Role Detail Grid */}
+        <div className="p-8 rounded-xl bg-[#161e2e] border border-[#222e40] shadow-lg space-y-6">
           {activeTabRole === "STUDENT" && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-xs">
-                  1
+                <div className="w-8 h-8 rounded-lg bg-[#121824] text-[#ffc174] border border-amber-500/30 flex items-center justify-center font-mono font-bold text-xs">
+                  01
                 </div>
-                <h4 className="text-base font-bold text-foreground">Skill Mapping & Matching</h4>
-                <p className="text-xs text-muted-fg leading-relaxed">
-                  Map your course credits and personal skills against live R&D challenges from Ministry of Ayush & AIIA.
+                <h4 className="font-headline font-bold text-base text-white">AI Skill Matching</h4>
+                <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                  Select your completed course modules to instantly match with high-priority industry challenges aligned with your degree requirements.
                 </p>
               </div>
               <div className="space-y-2">
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-xs">
-                  2
+                <div className="w-8 h-8 rounded-lg bg-[#121824] text-[#4edea3] border border-emerald-500/30 flex items-center justify-center font-mono font-bold text-xs">
+                  02
                 </div>
-                <h4 className="text-base font-bold text-foreground">Capstone & Internship Applications</h4>
-                <p className="text-xs text-muted-fg leading-relaxed">
-                  Claim problem statements for NEP degree capstones with dedicated corporate R&D mentorship.
+                <h4 className="font-headline font-bold text-base text-white">Capstone Fellowship</h4>
+                <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                  Work in guided sprints with corporate engineers and university faculty to solve real R&D bottlenecks and build verified portfolio code.
                 </p>
               </div>
               <div className="space-y-2">
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold text-xs">
-                  3
+                <div className="w-8 h-8 rounded-lg bg-[#121824] text-[#a3b18a] border border-[#588157]/40 flex items-center justify-center font-mono font-bold text-xs">
+                  03
                 </div>
-                <h4 className="text-base font-bold text-foreground">Verified Portfolio & PPO Pipeline</h4>
-                <p className="text-xs text-muted-fg leading-relaxed">
-                  Convert evaluated capstone projects into accredited internships and direct corporate job offers.
+                <h4 className="font-headline font-bold text-base text-white">Degree Credit & PPO</h4>
+                <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                  Automatically transfer earned project credits into the Academic Bank of Credits (ABC) ledger and convert capstones into direct Pre-Placement Offers.
                 </p>
               </div>
             </div>
@@ -173,30 +283,30 @@ export default function LandingPage() {
           {activeTabRole === "FACULTY" && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <div className="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-500 flex items-center justify-center font-bold text-xs">
-                  1
+                <div className="w-8 h-8 rounded-lg bg-[#121824] text-[#4edea3] flex items-center justify-center font-mono font-bold text-xs">
+                  01
                 </div>
-                <h4 className="text-base font-bold text-foreground">Curriculum Telemetry Stream</h4>
-                <p className="text-xs text-muted-fg leading-relaxed">
-                  Receive empirical feedback on missing tools, libraries, and standards across student submissions.
+                <h4 className="font-headline font-bold text-base text-white">Syllabus Deficit Analytics</h4>
+                <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                  Review real-time skill gaps aggregated from enterprise challenges to pinpoint outdated modules in your departmental syllabus.
                 </p>
               </div>
               <div className="space-y-2">
-                <div className="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-500 flex items-center justify-center font-bold text-xs">
-                  2
+                <div className="w-8 h-8 rounded-lg bg-[#121824] text-[#ffc174] flex items-center justify-center font-mono font-bold text-xs">
+                  02
                 </div>
-                <h4 className="text-base font-bold text-foreground">Syllabus-to-Industry Alignment</h4>
-                <p className="text-xs text-muted-fg leading-relaxed">
-                  Present data-driven curriculum recommendations to university Boards of Studies every academic year.
+                <h4 className="font-headline font-bold text-base text-white">Automated BoS Reports</h4>
+                <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                  Generate instant Board of Studies feedback reports with 1-click recommendations to add missing industry toolchains.
                 </p>
               </div>
               <div className="space-y-2">
-                <div className="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-500 flex items-center justify-center font-bold text-xs">
-                  3
+                <div className="w-8 h-8 rounded-lg bg-[#121824] text-[#a3b18a] flex items-center justify-center font-mono font-bold text-xs">
+                  03
                 </div>
-                <h4 className="text-base font-bold text-foreground">Joint Capstone Mentorship</h4>
-                <p className="text-xs text-muted-fg leading-relaxed">
-                  Co-guide capstone projects alongside industry engineers for academic-industry knowledge transfer.
+                <h4 className="font-headline font-bold text-base text-white">Dual Mentorship Tracking</h4>
+                <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                  Co-supervise student capstones alongside industry leads with transparent code milestone checks and verified assessment rubrics.
                 </p>
               </div>
             </div>
@@ -205,30 +315,30 @@ export default function LandingPage() {
           {activeTabRole === "INDUSTRY" && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-xs">
-                  1
+                <div className="w-8 h-8 rounded-lg bg-[#121824] text-[#ffc174] flex items-center justify-center font-mono font-bold text-xs">
+                  01
                 </div>
-                <h4 className="text-base font-bold text-foreground">Post Operational Challenges</h4>
-                <p className="text-xs text-muted-fg leading-relaxed">
-                  Publish real industry bottlenecks with exact skill prerequisites, timelines, and dataset access.
+                <h4 className="font-headline font-bold text-base text-white">Post Bottlenecks</h4>
+                <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                  Publish real engineering challenges, dataset specifications, and target deliverables directly to top university engineering cohorts.
                 </p>
               </div>
               <div className="space-y-2">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-xs">
-                  2
+                <div className="w-8 h-8 rounded-lg bg-[#121824] text-[#4edea3] flex items-center justify-center font-mono font-bold text-xs">
+                  02
                 </div>
-                <h4 className="text-base font-bold text-foreground">Skill Matrix Verification</h4>
-                <p className="text-xs text-muted-fg leading-relaxed">
-                  Review student AI match scores and skill gap analyses before assigning capstone sponsorships.
+                <h4 className="font-headline font-bold text-base text-white">Targeted Talent Pipeline</h4>
+                <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                  Discover pre-vetted student teams with verified vector match scores exceeding 80% alignment for your tech stack.
                 </p>
               </div>
               <div className="space-y-2">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-xs">
-                  3
+                <div className="w-8 h-8 rounded-lg bg-[#121824] text-[#a3b18a] flex items-center justify-center font-mono font-bold text-xs">
+                  03
                 </div>
-                <h4 className="text-base font-bold text-foreground">Direct Placement Pipeline</h4>
-                <p className="text-xs text-muted-fg leading-relaxed">
-                  Convert top-performing capstone students directly into paid interns and accredited PPO candidates.
+                <h4 className="font-headline font-bold text-base text-white">Direct PPO Conversion</h4>
+                <p className="font-body text-xs text-[#94a3b8] leading-relaxed">
+                  Extend accredited internships and Pre-Placement Offers based on empirical sprint deliverables rather than standard resumes.
                 </p>
               </div>
             </div>
@@ -236,98 +346,38 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 3. Three Pillar Overview */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
-          {/* Pillar 1 */}
-          <div className="p-6 rounded-2xl bg-card border border-border space-y-4 hover:border-primary/50 transition-all card-hover">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-              <Building2 className="w-5 h-5" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground">
-              Pillar 1: Industry & Ayush Repository
+      {/* 4. Student Benefit Accordion & Key Differentiators */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        {/* Left: Accordion */}
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <span className="font-mono text-[11px] text-[#ffc174] uppercase tracking-wider">
+              Student Value Proposition
+            </span>
+            <h3 className="font-headline text-2xl font-bold text-white">
+              How Does UniBridge Empower Students?
             </h3>
-            <p className="text-xs text-muted-fg leading-relaxed">
-              Ministry of Ayush, AIIA, Dabur, & Baidyanath post operational R&D challenges with skill requirements and target deliverables.
-            </p>
-            <Link href="/repository" className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:underline">
-              <span>Browse Ayush Repository</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
           </div>
-
-          {/* Pillar 2 */}
-          <div className="p-6 rounded-2xl bg-card border border-border space-y-4 hover:border-primary/50 transition-all card-hover">
-            <div className="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center">
-              <Cpu className="w-5 h-5" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground">
-              Pillar 2: AI Match Engine & Skill Gap
-            </h3>
-            <p className="text-xs text-muted-fg leading-relaxed">
-              FastAPI engine uses <code className="px-1 rounded bg-muted text-[10px]">all-MiniLM-L6-v2</code> sentence-transformers to calculate match scores and skill gap breakdowns.
-            </p>
-            <Link href="/matching" className="inline-flex items-center gap-1 text-xs font-bold text-teal-600 dark:text-teal-400 hover:underline">
-              <span>Test AI Match Engine</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          {/* Pillar 3 */}
-          <div className="p-6 rounded-2xl bg-card border border-border space-y-4 hover:border-primary/50 transition-all card-hover">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-              <BarChart3 className="w-5 h-5" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground">
-              Pillar 3: Curriculum Telemetry & PPO
-            </h3>
-            <p className="text-xs text-muted-fg leading-relaxed">
-              Empirical feedback notes stream to Academic Boards of Studies while evaluated capstones convert into accredited internships and PPOs.
-            </p>
-            <Link href="/telemetry" className="inline-flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline">
-              <span>View Telemetry Stream</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 4. Interactive Accordions (FAQ Modules) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        
-        {/* Module A */}
-        <div className="space-y-4 max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-foreground text-center">
-            How Does This Benefit a Student Learner?
-          </h2>
 
           <div className="space-y-3">
-            {studentBenefits.map((item, index) => {
-              const isOpen = openStudentBenefit === index;
+            {studentBenefits.map((item, idx) => {
+              const isOpen = openStudentBenefit === idx;
               return (
                 <div
-                  key={index}
-                  className="rounded-2xl bg-card border border-border overflow-hidden transition-all shadow-sm"
+                  key={idx}
+                  className="rounded-lg bg-[#161e2e] border border-[#222e40] overflow-hidden transition-all"
                 >
                   <button
-                    onClick={() => setOpenStudentBenefit(isOpen ? null : index)}
-                    className="w-full px-6 py-4 text-left flex items-center justify-between gap-4 focus:outline-none"
+                    onClick={() => setOpenStudentBenefit(isOpen ? null : idx)}
+                    className="w-full text-left p-4 font-headline font-semibold text-sm text-white flex items-center justify-between gap-3 hover:text-[#ffc174] transition-colors"
                   >
-                    <div className="flex items-center gap-3">
-                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                      <span className="text-sm font-bold text-foreground">{item.title}</span>
-                    </div>
-                    <ChevronDown
-                      className={`w-4 h-4 text-muted-fg transition-transform duration-200 ${
-                        isOpen ? "rotate-180 text-primary" : ""
-                      }`}
-                    />
+                    <span>{item.title}</span>
+                    <span className="material-symbols-outlined text-[18px] text-[#a3b18a]">
+                      {isOpen ? "expand_less" : "expand_more"}
+                    </span>
                   </button>
-
                   {isOpen && (
-                    <div className="px-6 pb-4 pt-1 text-xs text-muted-fg leading-relaxed border-t border-border/40 bg-muted/20">
+                    <div className="px-4 pb-4 font-body text-xs text-[#94a3b8] leading-relaxed border-t border-[#222e40]/60 pt-3">
                       {item.desc}
                     </div>
                   )}
@@ -337,42 +387,56 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Module B */}
-        <div className="max-w-4xl mx-auto p-6 rounded-3xl bg-card border border-border shadow-md space-y-4">
-          <button
-            onClick={() => setOpenDifferenceAccordion(!openDifferenceAccordion)}
-            className="w-full text-left flex items-center justify-between gap-4 focus:outline-none"
-          >
-            <div className="flex items-center gap-3">
-              <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0" />
-              <h3 className="text-base font-bold text-foreground">
-                What Makes UniBridge Different from a Normal Internship Job Board?
-              </h3>
-            </div>
-            <ChevronDown
-              className={`w-4 h-4 text-muted-fg transition-transform duration-200 ${
-                openDifferenceAccordion ? "rotate-180 text-amber-500" : ""
-              }`}
-            />
-          </button>
+        {/* Right: Key Differentiator Box */}
+        <div className="p-6 rounded-xl bg-[#121824] border border-[#222e40] space-y-6 shadow-xl relative overflow-hidden">
+          <div className="space-y-1">
+            <span className="px-2 py-0.5 rounded bg-[#161e2e] text-[#4edea3] border border-emerald-500/30 font-mono text-[10px] uppercase">
+              SIH 2026 Competitive Advantage
+            </span>
+            <h3 className="font-headline text-xl font-bold text-white">
+              What Makes UniBridge Unique?
+            </h3>
+          </div>
 
-          {openDifferenceAccordion && (
-            <div className="text-xs text-muted-fg space-y-3 leading-relaxed border-t border-border/50 pt-4">
-              <p>
-                Standard job portals only list listings for existing graduates. UniBridge integrates directly into ongoing university degree coursework (Semesters 3–7) under NEP 2020 guidelines:
-              </p>
-              <ul className="list-disc pl-5 space-y-1.5 font-medium text-foreground">
-                <li>Translates raw industrial problems into NEP capstone credit deliverables.</li>
-                <li>Uses vector NLP AI matching to evaluate curriculum alignment before enrollment.</li>
-                <li>Feeds skill deficit telemetry back to university syllabus committees for continuous modernization.</li>
-                <li>Provides verifiable cryptographic proof of student code evaluation for direct campus placement.</li>
-              </ul>
-            </div>
-          )}
+          <ul className="space-y-4 font-body text-xs text-[#dfe2ee]">
+            <li className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-[18px] text-[#4edea3] mt-0.5">check_circle</span>
+              <div>
+                <strong className="text-white">Empirical Vector Cosine Matching:</strong> We use 384-dimensional PyTorch embeddings instead of simple keyword tag searching to compute true semantic alignment between syllabus outcomes and industrial engineering problems.
+              </div>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-[18px] text-[#ffc174] mt-0.5">check_circle</span>
+              <div>
+                <strong className="text-white">Board of Studies Dynamic Feedback Loop:</strong> Automatically sends skill deficit telemetry to university syllabus committees, reducing curriculum revision cycles from 4 years to continuous feedback.
+              </div>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="material-symbols-outlined text-[18px] text-[#a3b18a] mt-0.5">check_circle</span>
+              <div>
+                <strong className="text-white">Full NEP 2020 & UGC NCrF Alignment:</strong> Direct credit mapping formulas convert capstone deliverables into official degree credits and verified Academic Bank of Credits ledger entries.
+              </div>
+            </li>
+          </ul>
+
+          <div className="pt-2">
+            <Link
+              href="/matching"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-slate-950 font-bold text-xs hover:brightness-110 transition-all shadow-md"
+            >
+              <span>Test AI Matching Engine</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
-
       </section>
 
+      {/* Render Automation Demo Modal */}
+      <AutomationDemoModal
+        isOpen={isDemoOpen}
+        onClose={() => setIsDemoOpen(false)}
+      />
     </div>
   );
 }
+
